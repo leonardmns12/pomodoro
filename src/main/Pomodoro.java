@@ -25,7 +25,7 @@ public class Pomodoro extends JFrame{
 	
 	public Pomodoro() {
 		init();
-		setSize(400 , 400);
+		setSize(617 , 460);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
@@ -38,7 +38,7 @@ public class Pomodoro extends JFrame{
 		elapsedTime = 0;
 		minute = 0;
 		second = 0;
-		start = new JButton(new ImageIcon(getClass().getResource("/res/play.png")));
+		start = new JButton(new ImageIcon(getClass().getResource("/play.png")));
 		start.setBackground(Color.red);
 		start.setFocusPainted(false);
 		Border border = BorderFactory.createEmptyBorder();
@@ -50,7 +50,7 @@ public class Pomodoro extends JFrame{
 		time.setHorizontalAlignment(JLabel.CENTER);
 		panel.add(time); 
 		panel.add(start);
-		add(panel , BorderLayout.CENTER);	
+		getContentPane().add(panel , BorderLayout.CENTER);	
 		Timers timers = new Timers(0);
 		start.addActionListener(new ActionListener() {
 			@Override
@@ -75,7 +75,7 @@ public class Pomodoro extends JFrame{
 	}
 	
 	public void start() {
-		start.setIcon(new ImageIcon(getClass().getResource("/res/pause.png")));
+		start.setIcon(new ImageIcon(getClass().getResource("/pause.png")));
 		Runnable myRunnable =
 			    new Runnable(){
 			        public void run(){
@@ -86,7 +86,7 @@ public class Pomodoro extends JFrame{
 	}
 	
 	public void stop() {
-		start.setIcon(new ImageIcon(getClass().getResource("/res/play.png")));
+		start.setIcon(new ImageIcon(getClass().getResource("/play.png")));
 		timer.stop();
 	}
 }
