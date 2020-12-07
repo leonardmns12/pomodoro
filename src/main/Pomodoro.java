@@ -1,373 +1,184 @@
-
 package main;
 
-import java.awt.Toolkit;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Formatter;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static javafx.util.Duration.millis;
-import javax.swing.JOptionPane;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.border.Border;
+import state.Timers;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.SystemColor;
 
+public class Pomodoro extends JFrame {
+	private JPanel midPanel, topPanel;
+	private JLabel time, shortBreak, longBreak;
+	private JButton start, pause, skip, pomodoroBtn, shortBreakBtn, longBreakBtn;
+	private JTextField pomodoroTimer, shortBreakTime, longBreakTime;
+	int minute = 0, second = 0, elapsedTime = 0;
+	String str_minute = String.format("%02d", minute);
+	String str_second = String.format("%02d", second);
+	boolean isStarted = false;
+	Timer timer;
+	private JPanel bottomPanel;
+	
+	public Pomodoro() {
+		//RUN WINDOW
+		init();
+		
+		getContentPane().setBackground(Color.WHITE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setSize(600, 450);
+		setVisible(true);
+		setTitle("Pomodoro");
+	}
+	
+	public void init() {
+		//TOP PANEL
+		topPanel = new JPanel();
+		topPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		topPanel.setFont(new Font("Tahoma", Font.BOLD, 18));
+		topPanel.setBackground(Color.WHITE);
+		topPanel.setLayout(new GridBagLayout());
+		GridBagConstraints cTop = new GridBagConstraints();
+		cTop.fill = GridBagConstraints.HORIZONTAL;
+		cTop.insets = new Insets(25, 2, 25, 2);
+		cTop.ipadx = 20;
+		cTop.ipady = 20;
+		getContentPane().add(topPanel, BorderLayout.NORTH);
 
-
-public class Pomodoro extends javax.swing.JFrame {
-    Timer timer;
-    int pomodoroNo;
-    boolean paused;//keeps track of the number of pomodoro intervals completed
-    
-    public Pomodoro() 
-    {   
-        initComponents();
-        
-    }
-
-    
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        pomodoroPanel = new javax.swing.JPanel();
-        pomodoroTimeLabel = new javax.swing.JLabel();
-        shortBreakLabel = new javax.swing.JLabel();
-        longBreakLabel = new javax.swing.JLabel();
-        pause = new javax.swing.JButton();
-        reset = new javax.swing.JButton();
-        timerLabel = new javax.swing.JLabel();
-        timeElapsed = new javax.swing.JLabel();
-        pomodoroTime = new javax.swing.JTextField();
-        shortBreakTime = new javax.swing.JTextField();
-        longBreakTime = new javax.swing.JTextField();
-        start = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        pomodoroPanel.setBackground(new java.awt.Color(204, 204, 204));
-        pomodoroPanel.setToolTipText("");
-
-        pomodoroTimeLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        pomodoroTimeLabel.setForeground(new java.awt.Color(204, 0, 0));
-        pomodoroTimeLabel.setText("Pomodoro Time: ");
-
-        shortBreakLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        shortBreakLabel.setForeground(new java.awt.Color(204, 0, 51));
-        shortBreakLabel.setText("Short Break Time: ");
-
-        longBreakLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        longBreakLabel.setForeground(new java.awt.Color(204, 0, 51));
-        longBreakLabel.setText("Long Break Time:");
-
-        pause.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
-        pause.setText("Pause");
-        pause.setDoubleBuffered(true);
-        pause.setEnabled(false);
-        pause.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pauseActionPerformed(evt);
-            }
-        });
-
-        reset.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
-        reset.setText("Reset");
-        reset.setEnabled(false);
-        reset.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetActionPerformed(evt);
-            }
-        });
-
-        timerLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        timerLabel.setText("Timer: ");
-
-        timeElapsed.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        timeElapsed.setText("0:00:00");
-
-        pomodoroTime.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        pomodoroTime.setText("0:25:00");
-        pomodoroTime.setAlignmentY(0.6F);
-        pomodoroTime.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pomodoroTimeActionPerformed(evt);
-            }
-        });
-
-        shortBreakTime.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+		
+		shortBreak = new JLabel();
+        shortBreak.setText("Short Break Time: ");
+        topPanel.add(shortBreak, cTop);
+		
+		shortBreakTime = new JTextField();
+		shortBreakTime.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         shortBreakTime.setText("0:05:00");
         shortBreakTime.setAlignmentY(0.6F);
-
+        topPanel.add(shortBreakTime,cTop);
+        
+        
+        longBreak = new JLabel();
+        longBreak.setText("Long Break Time: ");
+        topPanel.add(longBreak, cTop);
+        
+        longBreakTime = new JTextField();
         longBreakTime.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         longBreakTime.setText("0:30:00");
         longBreakTime.setAlignmentY(0.6F);
-
-        start.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
-        start.setText("Start");
-        start.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pomodoroPanelLayout = new javax.swing.GroupLayout(pomodoroPanel);
-        pomodoroPanel.setLayout(pomodoroPanelLayout);
-        pomodoroPanelLayout.setHorizontalGroup(
-            pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pomodoroPanelLayout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
-                .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pomodoroPanelLayout.createSequentialGroup()
-                        .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(pomodoroPanelLayout.createSequentialGroup()
-                                .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pomodoroTimeLabel)
-                                    .addComponent(longBreakLabel)
-                                    .addComponent(shortBreakLabel))
-                                .addGap(30, 30, 30)
-                                .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(longBreakTime, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(shortBreakTime, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                                        .addComponent(pomodoroTime, javax.swing.GroupLayout.Alignment.LEADING))))
-                            .addGroup(pomodoroPanelLayout.createSequentialGroup()
-                                .addComponent(timerLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(timeElapsed)
-                                .addGap(60, 60, 60)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pomodoroPanelLayout.createSequentialGroup()
-                        .addGap(0, 17, Short.MAX_VALUE)
-                        .addComponent(start)
-                        .addGap(18, 18, 18)
-                        .addComponent(pause)
-                        .addGap(18, 18, 18)
-                        .addComponent(reset)
-                        .addGap(25, 25, 25))))
-        );
-        pomodoroPanelLayout.setVerticalGroup(
-            pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pomodoroPanelLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pomodoroTimeLabel)
-                    .addComponent(pomodoroTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(shortBreakLabel)
-                    .addComponent(shortBreakTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(longBreakLabel)
-                    .addComponent(longBreakTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(timerLabel)
-                    .addComponent(timeElapsed))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(pomodoroPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(reset)
-                    .addComponent(pause)
-                    .addComponent(start))
-                .addGap(20, 20, 20))
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(pomodoroPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(pomodoroPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58))
-        );
-
-        pack();
-        setLocationRelativeTo(null);
-    }// </editor-fold>//GEN-END:initComponents
-    
-    public void setTime(int time) //function to display timer
-    {   
-            
-            long timeNow = 1000*time;
-            long second = (timeNow / 1000) % 60;
-            long minute = (timeNow / (1000 * 60)) % 60;
-            long hour = (timeNow / (1000 * 60 * 60)) % 24;
-            timeElapsed.setText(String.format("%02d:%02d:%02d", hour, minute, second));
-    }
-    public void pomodoroTimer() //runs for pomodoro time
-    {  
-        timer = new Timer();
-        timer.schedule(new TimerTask()  {
-        int counter = 0;
-        String [] customTime = pomodoroTime.getText().split(":");
-        int counterLimit = Integer.parseInt(customTime[0])*60*60 + Integer.parseInt(customTime[1])*60+
-                 Integer.parseInt(customTime[2]);
+        topPanel.add(longBreakTime, cTop);
         
-        @Override
-        public void run()
-            {   
-                if(!paused)
-                { 
-                ++counter;
-                setTime(counter);
-                if(counter == counterLimit && pomodoroNo < 4) //if less than 4 pomodoros are complete, take a short break
-                    {   
-                       timer.cancel();
-                       Toolkit.getDefaultToolkit().beep();
-                       JOptionPane.showMessageDialog(null,"You have completed a pomodoro! Take a short break!");
-                       shortBreakTimer();
-                       pomodoroNo ++;
-                    }
-           
-                else if (counter == counterLimit && pomodoroNo == 4) //if 4 pomodoros are complete, take a long break
-                    {
-                        timer.cancel();
-                        Toolkit.getDefaultToolkit().beep();
-                        JOptionPane.showMessageDialog(null,"You have completed 4 pomodoros! Take a long break!");
-                        longBreakTimer();
-                    }
-                }   }},0,1000);
-            
-    }
+	
+		//MID PANEL
+		midPanel = new JPanel();
+		midPanel.setBackground(Color.WHITE);
+		midPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		getContentPane().add(midPanel , BorderLayout.CENTER);
+		
+		Border border = BorderFactory.createEmptyBorder();
 
-    public void shortBreakTimer() //runs for short-break time
-    {   
-        timer = new Timer();
-        timer.schedule(new TimerTask()  {
-        int counter = 0;
-        String [] customTime = shortBreakTime.getText().split(":");
-        int counterLimit = Integer.parseInt(customTime[0])*60*60 + Integer.parseInt(customTime[1])*60+
-                 Integer.parseInt(customTime[2]);
-       
-        @Override
-        public void run()
-            {   
-                if (!paused)
-                {
-                ++counter;
-                setTime(counter);
-                if(counter == counterLimit) 
-                    {  timer.cancel();
-                       Toolkit.getDefaultToolkit().beep();
-                       JOptionPane.showMessageDialog(null,"Time up! Resume work.");
-                       pomodoroTimer();
-                       
-                    }
-                }}},0,1000); 
-    }
-    
-    public void longBreakTimer() //runs for long break time
-    {
-        timer = new Timer();
-        timer.schedule(new TimerTask()  {
-        int counter = 0;
-        String [] customTime = longBreakTime.getText().split(":");
-        int counterLimit = Integer.parseInt(customTime[0])*60*60 + Integer.parseInt(customTime[1])*60+
-                 Integer.parseInt(customTime[2]);
-        @Override
-        public void run()
-            {  
-               if(!paused)
-               {
-                ++counter;
-                setTime(counter);
-                if(counter == counterLimit) 
-                {   
-                    timer.cancel();
-                    Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(null,"Time up! Resume work.");
-                    pomodoroNo = 1;
-                    pomodoroTimer();
-                }
-               }}},0,1000);
-    } 
-    
-    private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
-       pause.setEnabled(true);
-       reset.setEnabled(true);
-       pomodoroTimer();
-       pomodoroNo = 1;
-       paused = false;
-   
-    }//GEN-LAST:event_startActionPerformed
-
-    private void pomodoroTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pomodoroTimeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pomodoroTimeActionPerformed
-
-    private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
-      
-        if(!paused)
-        {
-            paused = true;
-            pause.setText("Unpause");
-            reset.setEnabled(false);
-        }
-     
-        else
-        {
-            paused = false;
-            pause.setText("Pause");
-            reset.setEnabled(true);
-        }
-    }//GEN-LAST:event_pauseActionPerformed
-
-    private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
-    
-        timer.cancel();
-        timeElapsed.setText("00:00:00");
-        pause.setEnabled(false);
-        reset.setEnabled(false);
-        
-    }//GEN-LAST:event_resetActionPerformed
-
-  
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Pomodoro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Pomodoro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Pomodoro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Pomodoro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Pomodoro().setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel longBreakLabel;
-    private javax.swing.JTextField longBreakTime;
-    private javax.swing.JButton pause;
-    private javax.swing.JPanel pomodoroPanel;
-    private javax.swing.JTextField pomodoroTime;
-    private javax.swing.JLabel pomodoroTimeLabel;
-    private javax.swing.JButton reset;
-    private javax.swing.JLabel shortBreakLabel;
-    private javax.swing.JTextField shortBreakTime;
-    private javax.swing.JButton start;
-    private javax.swing.JLabel timeElapsed;
-    private javax.swing.JLabel timerLabel;
-    // End of variables declaration//GEN-END:variables
+		time = new JLabel(str_minute + ":" + str_second);
+		time.setFont(new Font("Verdana", Font.PLAIN , 40));
+		time.setHorizontalAlignment(JLabel.CENTER);
+		midPanel.add(time);	
+		
+		//BOTTOM PANEL
+		bottomPanel = new JPanel();
+		bottomPanel.setBackground(SystemColor.info);
+		bottomPanel.setLayout(new GridBagLayout());
+		bottomPanel.setPreferredSize(new Dimension(0, 120));
+		GridBagConstraints cBottom = new GridBagConstraints();
+		cBottom.fill = GridBagConstraints.HORIZONTAL;
+		cBottom.ipadx = 50;
+		cBottom.ipady = 30;
+		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+		
+		//START BUTTON
+		start = new JButton("Play", new ImageIcon(getClass().getResource("/play.png")));
+		start.setFont(new Font("Tahoma", Font.BOLD, 20));
+		start.setVerticalTextPosition(SwingConstants.BOTTOM);
+		start.setHorizontalTextPosition(SwingConstants.CENTER);
+		start.setBackground(SystemColor.info);
+		start.setFocusPainted(false);
+		start.setBorder(border);
+		start.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				start();
+				start.setForeground(Color.lightGray);
+				pause.setForeground(Color.BLACK);
+			}
+		});
+		bottomPanel.add(start, cBottom);
+		
+		//PAUSE BUTTON
+		pause = new JButton("Pause", new ImageIcon(getClass().getResource("/pause.png")));
+		pause.setFont(new Font("Tahoma", Font.BOLD, 20));
+		pause.setVerticalTextPosition(SwingConstants.BOTTOM);
+		pause.setHorizontalTextPosition(SwingConstants.CENTER);
+		pause.setBackground(SystemColor.info);
+		pause.setFocusPainted(false);
+		pause.setBorder(border);
+		pause.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				stop();
+				pause.setForeground(Color.lightGray);
+				start.setForeground(Color.BLACK);
+			}
+		});
+		bottomPanel.add(pause, cBottom);
+		
+		//SKIP BUTTON
+		skip = new JButton("Skip", new ImageIcon(getClass().getResource("/skip.png")));
+		skip.setFont(new Font("Tahoma", Font.BOLD, 20));
+		skip.setVerticalTextPosition(SwingConstants.BOTTOM);
+		skip.setHorizontalTextPosition(SwingConstants.CENTER);
+		skip.setBackground(SystemColor.info);
+		skip.setFocusPainted(false);
+		skip.setBorder(border);
+		bottomPanel.add(skip, cBottom);
+		
+		Timers timers = new Timers(0);
+		timer = new Timer(1000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				time.setText(timers.printTime());
+	    		timers.Start();
+			}
+		});
+	}
+	
+	public void start() {
+		Runnable myRunnable =
+		    new Runnable() {
+		        public void run() {
+		        	timer.start();
+		        }
+		};
+		myRunnable.run();
+		
+//		Timers timers = new Timers(0);
+//		timer = new Timer(1000, new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				time.setText(timers.printTime());
+//	    		timers.Start();
+//			}
+//		});
+		
+	}
+	
+	public void stop() {
+		timer.stop();
+	}
 }
