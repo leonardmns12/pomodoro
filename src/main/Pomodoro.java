@@ -102,7 +102,6 @@ public class Pomodoro extends JFrame {
 				shortBreakBtn.setBackground(Color.DARK_GRAY);
 				longBreakBtn.setBackground(SystemColor.textHighlight);
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
-		      	start.setForeground(Color.BLACK);
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
 		      	start.setForeground(Color.BLACK);
 		      	
@@ -126,6 +125,11 @@ public class Pomodoro extends JFrame {
 				longBreakBtn.setBackground(Color.DARK_GRAY);
 				shortBreakBtn.setBackground(SystemColor.textHighlight);
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
+      			start.setForeground(Color.BLACK);
+		      	
+		      	timers.resetTime();
+		      	stop();
+		      	timers.longBreak();
 			}
 		});
 		topPanel.add(longBreakBtn, cTop);

@@ -31,4 +31,8 @@ public class Timers {
 	public void shortBreak() {
 		currentState = currentState.shortBreak();
 	}
+	
+	public void longBreak() {
+		currentState = currentState.longBreak();
+	}
 }

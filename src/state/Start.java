@@ -51,4 +51,11 @@ public class Start extends TimerState {
 		elapsedTime = elapsedTime - 1000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
 	}
+	
+	@Override
+	public TimerState longBreak() {
+		elapsedTime = 900000;
+		elapsedTime = elapsedTime - 1000;
+		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
+	}
 }

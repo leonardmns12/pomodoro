@@ -8,6 +8,7 @@ public abstract class TimerState {
 	protected abstract TimerState increment();
 	protected abstract TimerState pomodoro();
 	protected abstract TimerState shortBreak();
+	protected abstract TimerState longBreak();
 	
 	public String print() {
 		return getTime();
