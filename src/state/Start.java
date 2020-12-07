@@ -5,6 +5,7 @@ public class Start extends TimerState {
 	int second;
 	int minute;
 	int elapsedTime;
+	String status;
 	
 	public Start(TimerState Source, int second, int minute, int elapsedTime) {
 		this.Source = Source;
@@ -19,17 +20,35 @@ public class Start extends TimerState {
 		String mnt = String.format("%02d", minute);
 		return mnt + ":" + scd;
 	}
-
+	
+	@Override
+	public int currentTime() {
+		return elapsedTime;
+	}
+	
+	public void resetTime() {
+		second = 0;
+		minute = 0;
+		getTime();
+	}
+	
 	@Override
 	public TimerState increment() {
-		if(second >= 60) {
-			elapsedTime = elapsedTime + 1000;
-			return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
-		} 
-		else {
-			elapsedTime = elapsedTime + 1000;
-			return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
-		}
+		elapsedTime = elapsedTime - 1000;
+		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
 	}
-
+	
+	@Override
+	public TimerState pomodoro() {
+		elapsedTime = 1500000;
+		elapsedTime = elapsedTime - 1000;
+		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
+	} 
+	
+	@Override
+	public TimerState shortBreak() {
+		elapsedTime = 300000;
+		elapsedTime = elapsedTime - 1000;
+		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
+	}
 }

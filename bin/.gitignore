@@ -1,10 +1,7 @@
-/Lato-Regular.ttf
-/filled_dot.png
+/bin/
+/.classpath
+/.gitignore
+/.project
 /main/
-/outline_dot.png
-/pause.png
-/play.png
-/skip.png
+/res/
 /state/
-/tomato.png
-/twotone_dot.png

@@ -39,6 +39,19 @@ public class Pomodoro extends JFrame {
 	}
 	
 	public void init() {
+		Timers timers = new Timers(1500000);
+		timer = new Timer(1000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				time.setText(timers.printTime());
+	    		timers.Start();
+	    		
+	    		if(timers.currentTime() < 0) {
+	    			stop();
+	    		}
+			}
+		});
+		
 		//TOP PANEL
 		topPanel = new JPanel();
 		topPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -66,6 +79,12 @@ public class Pomodoro extends JFrame {
 				pomodoroBtn.setBackground(Color.DARK_GRAY);
 				shortBreakBtn.setBackground(SystemColor.textHighlight);
 		      	longBreakBtn.setBackground(SystemColor.textHighlight);
+		      	longBreakBtn.setBackground(SystemColor.textHighlight);
+		      	start.setForeground(Color.BLACK);
+		      	
+		      	timers.resetTime();
+		      	stop();
+		      	timers.pomodoro();
 			}
 		});
 		topPanel.add(pomodoroBtn, cTop);
@@ -83,6 +102,13 @@ public class Pomodoro extends JFrame {
 				shortBreakBtn.setBackground(Color.DARK_GRAY);
 				longBreakBtn.setBackground(SystemColor.textHighlight);
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
+		      	start.setForeground(Color.BLACK);
+		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
+		      	start.setForeground(Color.BLACK);
+		      	
+		      	timers.resetTime();
+		      	stop();
+		      	timers.shortBreak();
 			}
 		});
 		topPanel.add(shortBreakBtn, cTop);
@@ -176,14 +202,6 @@ public class Pomodoro extends JFrame {
 		skip.setBorder(border);
 		bottomPanel.add(skip, cBottom);
 		
-		Timers timers = new Timers(0);
-		timer = new Timer(1000, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				time.setText(timers.printTime());
-	    		timers.Start();
-			}
-		});
 	}
 	
 	public void start() {
