@@ -8,13 +8,15 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.Border;
 import state.Timers;
 import java.awt.Component;
 import java.awt.SystemColor;
 
-public class Pomodoro extends JFrame {
+public class Pomodoro extends JFrame implements ActionListener {
 	JPanel midPanel;
 	JLabel time;
 	JButton start , pause;
@@ -38,6 +40,7 @@ public class Pomodoro extends JFrame {
 	}
 	
 	public void init() {
+		//TOP PANEL
 		topPanel = new JPanel();
 		topPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		topPanel.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -48,28 +51,35 @@ public class Pomodoro extends JFrame {
 		c.ipady = 15;
 		getContentPane().add(topPanel, BorderLayout.NORTH);
 		
+		//POMODORO BUTTON
 		pomodoroBtn = new JButton("Pomodoro");
 		pomodoroBtn.setBorderPainted(false);
 		pomodoroBtn.setFont(new Font("Tahoma", Font.BOLD, 18));
 		pomodoroBtn.setForeground(SystemColor.text);
 		pomodoroBtn.setFocusPainted(false);
 		pomodoroBtn.setBackground(SystemColor.textHighlight);
+		pomodoroBtn.addActionListener(this);
 		topPanel.add(pomodoroBtn, c);
 		
+		//SHORT BREAK BUTTON
 		shortBreakBtn = new JButton("Short Break");
 		shortBreakBtn.setForeground(Color.WHITE);
 		shortBreakBtn.setFont(new Font("Tahoma", Font.BOLD, 18));
 		shortBreakBtn.setFocusPainted(false);
 		shortBreakBtn.setBackground(SystemColor.textHighlight);
+		shortBreakBtn.addActionListener(this);
 		topPanel.add(shortBreakBtn, c);
 		
+		//LONG BREAK BUTTON
 		longBreakBtn = new JButton("Long Break");
 		longBreakBtn.setForeground(Color.WHITE);
 		longBreakBtn.setFont(new Font("Tahoma", Font.BOLD, 18));
 		longBreakBtn.setFocusPainted(false);
 		longBreakBtn.setBackground(SystemColor.textHighlight);
+		longBreakBtn.addActionListener(this);
 		topPanel.add(longBreakBtn, c);
-		
+	
+		//MID PANEL
 		midPanel = new JPanel();
 		midPanel.setBackground(Color.WHITE);
 		midPanel.setLayout(new GridLayout(0, 1, 0, 0));
@@ -125,6 +135,7 @@ public class Pomodoro extends JFrame {
 	
 	public void start() {
 		start.setIcon(new ImageIcon(getClass().getResource("/pause.png")));
+		start.setText("Pause");
 		Runnable myRunnable =
 			    new Runnable() {
 			        public void run() {
@@ -136,6 +147,27 @@ public class Pomodoro extends JFrame {
 	
 	public void stop() {
 		start.setIcon(new ImageIcon(getClass().getResource("/play.png")));
+		start.setText("Play");
 		timer.stop();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == shortBreakBtn) {
+	      shortBreakBtn.setBackground(Color.DARK_GRAY);
+	      longBreakBtn.setBackground(SystemColor.textHighlight);
+	      pomodoroBtn.setBackground(SystemColor.textHighlight);
+	    }
+	    else if(e.getSource() == longBreakBtn) {
+	    	longBreakBtn.setBackground(Color.DARK_GRAY);
+	    	shortBreakBtn.setBackground(SystemColor.textHighlight);
+	    	pomodoroBtn.setBackground(SystemColor.textHighlight);
+	    }
+	    else {
+	    	pomodoroBtn.setBackground(Color.DARK_GRAY);
+	    	longBreakBtn.setBackground(SystemColor.textHighlight);
+	    	shortBreakBtn.setBackground(SystemColor.textHighlight);
+	    }
+	    	
 	}
 }
