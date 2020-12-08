@@ -74,6 +74,11 @@ public class Pomodoro extends JFrame {
 		getContentPane().add(midPanel , BorderLayout.CENTER);
 		
 		Border border = BorderFactory.createEmptyBorder();
+		
+		lblNewLabel = new JLabel("Pomodoro Timer");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 32));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		midPanel.add(lblNewLabel);
 
 		lblNewLabel = new JLabel("Pomodoro Timer");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 32));
