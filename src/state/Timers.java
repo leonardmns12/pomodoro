@@ -14,4 +14,21 @@ public class Timers {
 	public String printTime() {
 		return currentState.print();
 	}
+	
+	public void resetTime() {
+		currentState.resetTime();
+	}
+	
+	public int currentTime()
+	{
+		return currentState.currentTime();
+	}
+	
+	public void pomodoro() {
+		currentState = currentState.pomodoro();
+	}
+	
+	public void shortBreak() {
+		currentState = currentState.shortBreak();
+	}
 }
