@@ -39,6 +39,7 @@ public class Pomodoro extends JFrame {
 	}
 	
 	public void init() {
+		//TIMERS
 		Timers timers = new Timers(1500000);
 		timer = new Timer(1000, new ActionListener() {
 			@Override
@@ -81,10 +82,9 @@ public class Pomodoro extends JFrame {
 		      	longBreakBtn.setBackground(SystemColor.textHighlight);
 		      	longBreakBtn.setBackground(SystemColor.textHighlight);
 		      	start.setForeground(Color.BLACK);
-		      	
-		      	timers.resetTime();
-		      	stop();
+
 		      	timers.pomodoro();
+		      	time.setText(timers.printTime());
 			}
 		});
 		topPanel.add(pomodoroBtn, cTop);
@@ -104,10 +104,9 @@ public class Pomodoro extends JFrame {
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
 		      	start.setForeground(Color.BLACK);
-		      	
-		      	timers.resetTime();
-		      	stop();
+
 		      	timers.shortBreak();
+		      	time.setText(timers.printTime());
 			}
 		});
 		topPanel.add(shortBreakBtn, cTop);
@@ -127,9 +126,9 @@ public class Pomodoro extends JFrame {
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
       			start.setForeground(Color.BLACK);
 		      	
-		      	timers.resetTime();
-		      	stop();
+      			//stop();
 		      	timers.longBreak();
+		      	time.setText(timers.printTime());
 			}
 		});
 		topPanel.add(longBreakBtn, cTop);

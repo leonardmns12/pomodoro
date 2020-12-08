@@ -8,7 +8,7 @@ public class Timers {
 	}
 	
 	public void Start() {
-		currentState = currentState.increment();
+		currentState = currentState.decrement();
 	}
 	
 	public String printTime() {

@@ -33,7 +33,7 @@ public class Start extends TimerState {
 	}
 	
 	@Override
-	public TimerState increment() {
+	public TimerState decrement() {
 		elapsedTime = elapsedTime - 1000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
 	}
@@ -41,21 +41,19 @@ public class Start extends TimerState {
 	@Override
 	public TimerState pomodoro() {
 		elapsedTime = 1500000;
-		elapsedTime = elapsedTime - 1000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
 	} 
 	
 	@Override
 	public TimerState shortBreak() {
 		elapsedTime = 300000;
-		elapsedTime = elapsedTime - 1000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
 	}
 	
 	@Override
 	public TimerState longBreak() {
 		elapsedTime = 900000;
-		elapsedTime = elapsedTime - 1000;
+		//elapsedTime = elapsedTime - 1000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
 	}
 }
