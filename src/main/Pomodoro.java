@@ -45,9 +45,12 @@ public class Pomodoro extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				time.setText(timers.printTime());
 	    		timers.Start();
-	    		
-	    		if(timers.currentTime() < 0) {
+	    		System.out.println(timers.printState());
+	    		if(timers.printState() == 7) {
+	    			timers.resetTime();
 	    			stop();
+	    			time.setText("00:00");
+	    			System.out.println("pomodoro finish!");
 	    		}
 			}
 		});
@@ -165,7 +168,6 @@ public class Pomodoro extends JFrame {
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				start();
 				start.setForeground(Color.lightGray);
 				pause.setForeground(Color.BLACK);
@@ -201,6 +203,13 @@ public class Pomodoro extends JFrame {
 		skip.setFocusPainted(false);
 		skip.setBorder(border);
 		bottomPanel.add(skip, cBottom);
+		skip.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+					timers.skipState();
+			}
+		});
 		
 	}
 	
