@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,15 +18,13 @@ import java.awt.Dimension;
 import java.awt.SystemColor;
 
 public class Pomodoro extends JFrame {
-	private JPanel midPanel, topPanel;
+	private JPanel midPanel, topPanel, bottomPanel;
 	private JLabel time;
-	private JButton start, pause, skip, pomodoroBtn, shortBreakBtn, longBreakBtn;
-	int minute = 0, second = 0, elapsedTime = 0;
+	private JButton start, pause, reset, pomodoroBtn, shortBreakBtn, longBreakBtn;
+	int minute = 0, second = 0;
 	String str_minute = String.format("%02d", minute);
 	String str_second = String.format("%02d", second);
-	boolean isStarted = false;
 	Timer timer;
-	private JPanel bottomPanel;
 	
 	public Pomodoro() {
 		//RUN WINDOW
@@ -47,8 +46,12 @@ public class Pomodoro extends JFrame {
 				time.setText(timers.printTime());
 	    		timers.Start();
 	    		
-	    		if(timers.currentTime() < 0) {
+	    		if(timers.currentTime() < -1) {
+	    			start.setForeground(Color.BLACK);
+	    			
 	    			stop();
+	    			timers.resetTime();
+					time.setText(timers.printTime());
 	    		}
 			}
 		});
@@ -72,7 +75,7 @@ public class Pomodoro extends JFrame {
 		pomodoroBtn.setFont(new Font("Tahoma", Font.BOLD, 18));
 		pomodoroBtn.setForeground(SystemColor.text);
 		pomodoroBtn.setFocusPainted(false);
-		pomodoroBtn.setBackground(SystemColor.textHighlight);
+		pomodoroBtn.setBackground(Color.DARK_GRAY);
 		pomodoroBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -82,7 +85,10 @@ public class Pomodoro extends JFrame {
 		      	longBreakBtn.setBackground(SystemColor.textHighlight);
 		      	longBreakBtn.setBackground(SystemColor.textHighlight);
 		      	start.setForeground(Color.BLACK);
+      			pause.setForeground(Color.BLACK);
+      			reset.setForeground(Color.BLACK);
 
+		      	stop();
 		      	timers.pomodoro();
 		      	time.setText(timers.printTime());
 			}
@@ -104,7 +110,10 @@ public class Pomodoro extends JFrame {
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
 		      	start.setForeground(Color.BLACK);
+      			pause.setForeground(Color.BLACK);
+      			reset.setForeground(Color.BLACK);
 
+		      	stop();
 		      	timers.shortBreak();
 		      	time.setText(timers.printTime());
 			}
@@ -125,8 +134,10 @@ public class Pomodoro extends JFrame {
 				shortBreakBtn.setBackground(SystemColor.textHighlight);
 		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
       			start.setForeground(Color.BLACK);
-		      	
-      			//stop();
+      			pause.setForeground(Color.BLACK);
+      			reset.setForeground(Color.BLACK);
+      			
+      			stop();
 		      	timers.longBreak();
 		      	time.setText(timers.printTime());
 			}
@@ -168,10 +179,11 @@ public class Pomodoro extends JFrame {
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				start();
 				start.setForeground(Color.lightGray);
 				pause.setForeground(Color.BLACK);
+				reset.setForeground(Color.BLACK);
+				
+				start();
 			}
 		});
 		bottomPanel.add(start, cBottom);
@@ -187,24 +199,36 @@ public class Pomodoro extends JFrame {
 		pause.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				stop();
 				pause.setForeground(Color.lightGray);
 				start.setForeground(Color.BLACK);
+				reset.setForeground(Color.BLACK);
+				
+				stop();
 			}
 		});
 		bottomPanel.add(pause, cBottom);
 		
-		//SKIP BUTTON
-		skip = new JButton("Skip", new ImageIcon(getClass().getResource("/skip.png")));
-		skip.setFont(new Font("Tahoma", Font.BOLD, 20));
-		skip.setVerticalTextPosition(SwingConstants.BOTTOM);
-		skip.setHorizontalTextPosition(SwingConstants.CENTER);
-		skip.setBackground(SystemColor.info);
-		skip.setFocusPainted(false);
-		skip.setBorder(border);
-		bottomPanel.add(skip, cBottom);
-		
+		//RESET BUTTON
+		reset = new JButton("Reset", new ImageIcon(getClass().getResource("/reset.png")));
+		reset.setFont(new Font("Tahoma", Font.BOLD, 20));
+		reset.setVerticalTextPosition(SwingConstants.BOTTOM);
+		reset.setHorizontalTextPosition(SwingConstants.CENTER);
+		reset.setBackground(SystemColor.info);
+		reset.setFocusPainted(false);
+		reset.setBorder(border);
+		reset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reset.setForeground(Color.lightGray);
+				start.setForeground(Color.BLACK);
+				pause.setForeground(Color.BLACK);
+				
+				stop();
+				timers.resetTime();
+				time.setText(timers.printTime());
+			}
+		});
+		bottomPanel.add(reset, cBottom);
 	}
 	
 	public void start() {

@@ -4,7 +4,7 @@ public class Timers {
 	private TimerState currentState;
 	
 	public Timers(int elapsedTime) {
-		currentState = new Start(currentState, (elapsedTime / 1000) % 60 , (elapsedTime / 60000) % 60, elapsedTime);
+		currentState = new Start(currentState, (elapsedTime / 1000) % 60 , (elapsedTime / 60000) % 60, elapsedTime, "pomodoro");
 	}
 	
 	public void Start() {
@@ -18,6 +18,10 @@ public class Timers {
 	public int currentTime()
 	{
 		return currentState.currentTime();
+	}
+	
+	public void resetTime() {
+		currentState = currentState.resetTime();
 	}
 	
 	public void pomodoro() {
