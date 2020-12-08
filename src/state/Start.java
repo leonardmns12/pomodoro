@@ -61,20 +61,19 @@ public class Start extends TimerState {
 	@Override
 	protected TimerState longBreak() {
 		elapsedTime = 900000;
-
 		elapsedTime = elapsedTime - 1000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , 1);
 	}
 	
 	public void changeState() {
 		this.state++;
-		if(state % 2 == 0 && state < 6) {
+		if(state % 2 == 0 && state < 8) {
 			System.out.println("starting shortBreak");
 			shortBreak();
-		} else if(state % 2 != 0 && state < 6) {
+		} else if(state % 2 != 0 && state < 8) {
 			System.out.println("starting work");
 			pomodoro();
-		} else if(state == 6){
+		} else if(state == 8){
 			System.out.println("starting longBreak");
 			longBreak();
 		} else {
