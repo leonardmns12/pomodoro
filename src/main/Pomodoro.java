@@ -20,7 +20,7 @@ public class Pomodoro extends JFrame {
 	private JPanel midPanel, topPanel;
 	private JLabel time;
 	private JButton start, pause, skip, pomodoroBtn, shortBreakBtn, longBreakBtn;
-	int minute = 0, second = 0, elapsedTime = 0;
+	int minute = 0, second = 0;
 	String str_minute = String.format("%02d", minute);
 	String str_second = String.format("%02d", second);
 	boolean isStarted = false;
