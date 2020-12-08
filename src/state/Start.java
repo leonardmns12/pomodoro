@@ -26,12 +26,6 @@ public class Start extends TimerState {
 		return elapsedTime;
 	}
 	
-	public void resetTime() {
-		second = 0;
-		minute = 0;
-		getTime();
-	}
-	
 	@Override
 	public TimerState decrement() {
 		elapsedTime = elapsedTime - 1000;

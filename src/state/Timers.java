@@ -15,10 +15,6 @@ public class Timers {
 		return currentState.print();
 	}
 	
-	public void resetTime() {
-		currentState.resetTime();
-	}
-	
 	public int currentTime()
 	{
 		return currentState.currentTime();
