@@ -26,6 +26,7 @@ public class Pomodoro extends JFrame {
 	boolean isStarted = false;
 	Timer timer;
 	private JPanel bottomPanel;
+	private JLabel lblNewLabel;
 	
 	public Pomodoro() {
 		//RUN WINDOW
@@ -65,70 +66,6 @@ public class Pomodoro extends JFrame {
 		cTop.ipady = 20;
 		getContentPane().add(topPanel, BorderLayout.NORTH);
 		
-		//POMODORO BUTTON
-		pomodoroBtn = new JButton("Pomodoro");
-		pomodoroBtn.setBorderPainted(false);
-		pomodoroBtn.setFont(new Font("Tahoma", Font.BOLD, 18));
-		pomodoroBtn.setForeground(SystemColor.text);
-		pomodoroBtn.setFocusPainted(false);
-		pomodoroBtn.setBackground(SystemColor.textHighlight);
-		pomodoroBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				pomodoroBtn.setBackground(Color.DARK_GRAY);
-				shortBreakBtn.setBackground(SystemColor.textHighlight);
-		      	longBreakBtn.setBackground(SystemColor.textHighlight);
-		      	longBreakBtn.setBackground(SystemColor.textHighlight);
-		      	start.setForeground(Color.BLACK);
-		      	
-		      	timers.resetTime();
-		      	stop();
-		      	timers.pomodoro();
-			}
-		});
-		topPanel.add(pomodoroBtn, cTop);
-		
-		//SHORT BREAK BUTTON
-		shortBreakBtn = new JButton("Short Break");
-		shortBreakBtn.setForeground(Color.WHITE);
-		shortBreakBtn.setFont(new Font("Tahoma", Font.BOLD, 18));
-		shortBreakBtn.setFocusPainted(false);
-		shortBreakBtn.setBackground(SystemColor.textHighlight);
-		shortBreakBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				shortBreakBtn.setBackground(Color.DARK_GRAY);
-				longBreakBtn.setBackground(SystemColor.textHighlight);
-		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
-		      	start.setForeground(Color.BLACK);
-		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
-		      	start.setForeground(Color.BLACK);
-		      	
-		      	timers.resetTime();
-		      	stop();
-		      	timers.shortBreak();
-			}
-		});
-		topPanel.add(shortBreakBtn, cTop);
-		
-		//LONG BREAK BUTTON
-		longBreakBtn = new JButton("Long Break");
-		longBreakBtn.setForeground(Color.WHITE);
-		longBreakBtn.setFont(new Font("Tahoma", Font.BOLD, 18));
-		longBreakBtn.setFocusPainted(false);
-		longBreakBtn.setBackground(SystemColor.textHighlight);
-		longBreakBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				longBreakBtn.setBackground(Color.DARK_GRAY);
-				shortBreakBtn.setBackground(SystemColor.textHighlight);
-		      	pomodoroBtn.setBackground(SystemColor.textHighlight);
-			}
-		});
-		topPanel.add(longBreakBtn, cTop);
 	
 		//MID PANEL
 		midPanel = new JPanel();
@@ -138,6 +75,11 @@ public class Pomodoro extends JFrame {
 		
 		Border border = BorderFactory.createEmptyBorder();
 
+		lblNewLabel = new JLabel("Pomodoro Timer");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 32));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		midPanel.add(lblNewLabel);
+		
 		time = new JLabel(str_minute + ":" + str_second);
 		time.setFont(new Font("Verdana", Font.PLAIN , 40));
 		time.setHorizontalAlignment(JLabel.CENTER);
