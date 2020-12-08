@@ -20,7 +20,7 @@ public class Pomodoro extends JFrame {
 	private JPanel midPanel, topPanel;
 	private JLabel time;
 	private JButton start, pause, skip, pomodoroBtn, shortBreakBtn, longBreakBtn;
-	int minute = 0, second = 0, elapsedTime = 0;
+	int minute = 0, second = 0;
 	String str_minute = String.format("%02d", minute);
 	String str_second = String.format("%02d", second);
 	boolean isStarted = false;
@@ -46,9 +46,12 @@ public class Pomodoro extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				time.setText(timers.printTime());
 	    		timers.Start();
-	    		
-	    		if(timers.currentTime() < 0) {
+	    		System.out.println(timers.printState());
+	    		if(timers.printState() == 7) {
+	    			timers.resetTime();
 	    			stop();
+	    			time.setText("00:00");
+	    			System.out.println("pomodoro finish!");
 	    		}
 			}
 		});
@@ -112,7 +115,6 @@ public class Pomodoro extends JFrame {
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				start();
 				start.setForeground(Color.lightGray);
 				pause.setForeground(Color.BLACK);
@@ -148,6 +150,13 @@ public class Pomodoro extends JFrame {
 		skip.setFocusPainted(false);
 		skip.setBorder(border);
 		bottomPanel.add(skip, cBottom);
+		skip.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+					timers.skipState();
+			}
+		});
 		
 	}
 	

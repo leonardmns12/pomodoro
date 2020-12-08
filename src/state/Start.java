@@ -5,12 +5,14 @@ public class Start extends TimerState {
 	int second;
 	int minute;
 	int elapsedTime;
+	int state = 0;
 	String status;
 	
-	public Start(TimerState Source, int second, int minute, int elapsedTime) {
+	public Start(TimerState Source, int second, int minute, int elapsedTime , int state) {
 		this.Source = Source;
 		this.second = second;
 		this.minute = minute;
+		this.state = state;
 		this.elapsedTime = elapsedTime;
 	}
 
@@ -29,34 +31,37 @@ public class Start extends TimerState {
 	public void resetTime() {
 		second = 0;
 		minute = 0;
+		state = 1;
 		getTime();
 	}
 	
 	@Override
 	public TimerState increment() {
 		elapsedTime = elapsedTime - 1000;
-		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
+		if(elapsedTime < 0) {
+			changeState();
+		}
+		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	}
 	
 	@Override
 	public TimerState pomodoro() {
 		elapsedTime = 1500000;
 		elapsedTime = elapsedTime - 1000;
-		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
+		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	} 
 	
 	@Override
 	public TimerState shortBreak() {
 		elapsedTime = 300000;
 		elapsedTime = elapsedTime - 1000;
-		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime);
+		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	}
-<<<<<<< Updated upstream
-=======
-	
+
 	@Override
 	protected TimerState longBreak() {
 		elapsedTime = 900000;
+
 		elapsedTime = elapsedTime - 1000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , 1);
 	}
@@ -87,5 +92,5 @@ public class Start extends TimerState {
 		changeState();
 	}
 
->>>>>>> Stashed changes
+
 }
