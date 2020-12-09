@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
+import builder.JButtonBuilder;
 import state.Timers;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,14 +19,14 @@ import java.awt.SystemColor;
 
 public class Pomodoro extends JFrame {
 	private JLabel time;
-	private JButton start, pause, skip, pomodoroBtn, shortBreakBtn, longBreakBtn;
+	private JButton start, pause, skip;
 	int minute = 0, second = 0;
 	String str_minute = String.format("%02d", minute);
 	String str_second = String.format("%02d", second);
 	boolean isStarted = false;
 	Timer timer;
-	private JPanel panel , midPanel , botPanel;
-	private JLabel phase1,phase2,phase3,phase4;
+	private JPanel panel, midPanel, botPanel;
+	private JLabel phase1, phase2, phase3, phase4;
 	
 	public Pomodoro() {
 		//RUN WINDOW
@@ -34,10 +35,23 @@ public class Pomodoro extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+		setIconImage(new ImageIcon(getClass().getResource("/res/tomato.png")).getImage());
 		setTitle("Pomodoro");
 	}
 	
 	public void init() {
+		//BORDER
+		Border border = BorderFactory.createEmptyBorder();
+		
+		//JBUTTON BUILDER
+		JButtonBuilder builder = new JButtonBuilder();
+
+		start = builder.setIcon("/res/play.png").setBackground(Color.red).setBorder(border).setFocus(false).setVisible(true).build();
+		skip = builder.setIcon("/res/skip.png").setBackground(Color.red).setFont("Tahoma", 10).setFocus(false).setVisible(true).build();
+		
+		//JLABEL BUILDER
+		
+		//TIMERS
 		Timers timers = new Timers(1500000);
 		timer = new Timer(1000, new ActionListener() {
 			@Override
@@ -135,23 +149,12 @@ public class Pomodoro extends JFrame {
 		botPanel.add(phase3);
 		botPanel.add(phase4);
 		
-		start = new JButton(new ImageIcon(getClass().getResource("/res/play.png")));
-		start.setBackground(Color.red);
-		start.setFocusPainted(false);
-		Border border = BorderFactory.createEmptyBorder();
-		start.setBorder(border);
-		start.setAlignmentX(Component.CENTER_ALIGNMENT);
-		start.setAlignmentY(Component.CENTER_ALIGNMENT);
 		String str_minute = String.format("%02d", minute);
 		String str_second = String.format("%02d" , second);
 		time = new JLabel(str_minute + ":" + str_second);
 		time.setFont(new Font("Verdana" , Font.PLAIN , 40));
 		time.setAlignmentX(Component.CENTER_ALIGNMENT);
-		skip = new JButton(new ImageIcon(getClass().getResource("/res/skip.png")));
-		skip.setBackground(Color.red);
-		skip.setFocusPainted(false);
-		skip.setAlignmentX(Component.CENTER_ALIGNMENT);
-		skip.setVisible(false);
+		
 		midPanel.add(start);
 		midPanel.add(skip);
 		panel.add(time); 

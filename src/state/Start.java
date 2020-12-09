@@ -47,7 +47,7 @@ public class Start extends TimerState {
 	
 	@Override
 	public TimerState pomodoro() {
-		elapsedTime = 1510000;
+		elapsedTime = 1501000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	} 
 	
