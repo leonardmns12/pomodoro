@@ -23,8 +23,8 @@ public class JButtonBuilder {
 		return this;
 	}
 	
-	public JButtonBuilder setIcon(String path) {
-		this.icon = new ImageIcon(getClass().getResource(path));
+	public JButtonBuilder setIcon(String image) {
+		this.icon = new ImageIcon(getClass().getResource(image));
 		return this;
 	}
 	
