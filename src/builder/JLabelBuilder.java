@@ -6,6 +6,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
+import facade.FontFacade;
+
 public class JLabelBuilder {
 	private JLabel jLabel;
 	
@@ -28,8 +30,9 @@ public class JLabelBuilder {
 		return this;
 	}
 	
-	public JLabelBuilder font(String name, int size) {
-		jLabel.setFont(new Font(name , Font.PLAIN , size));
+	public JLabelBuilder font(String name, int size, String style) {
+		FontFacade fontFacade = new FontFacade();
+		jLabel.setFont(fontFacade.create(name, size, style));
 		return this;
 	}
 	

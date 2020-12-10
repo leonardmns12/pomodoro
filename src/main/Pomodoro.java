@@ -42,8 +42,6 @@ public class Pomodoro extends JFrame {
 	public void init() {
 		//----- UI -----//
 		
-		records = new Record();
-		
 		//BORDER
 		Border emptyBorder = BorderFactory.createEmptyBorder();
 		
@@ -52,12 +50,13 @@ public class Pomodoro extends JFrame {
 		skip =  new JButtonBuilder().icon("/res/skip.png").background(Color.decode("#f55442")).border(emptyBorder).focus(false).visible(false).build();
 		
 		//JLABEL BUILDER
-		time = new JLabelBuilder().text(str_minute + ":" + str_second).font("Verdana", 65).build();
+		time = new JLabelBuilder().text(str_minute + ":" + str_second).font("Verdana", 65, "PLAIN").build();
 		time.setAlignmentX(Component.CENTER_ALIGNMENT);
 		phase1 = new JLabelBuilder().icon("/res/outline_dot.png").border(new EmptyBorder(0, 3, 0, 3)).build();
 		phase2 = new JLabelBuilder().icon("/res/outline_dot.png").border(new EmptyBorder(0, 3, 0, 3)).build();
 		phase3 = new JLabelBuilder().icon("/res/outline_dot.png").border(new EmptyBorder(0, 3, 0, 3)).build();
 		phase4 = new JLabelBuilder().icon("/res/outline_dot.png").border(new EmptyBorder(0, 3, 0, 3)).build();
+		stats = new JLabelBuilder().text("view stats").build();
 		
 		//-- TOP PANEL --//
 		topPanel = new JPanel();
@@ -98,42 +97,10 @@ public class Pomodoro extends JFrame {
 		statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.X_AXIS));
 		statsPanel.add(Box.createHorizontalGlue());
 		statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
-		stats = new JLabel("view stats");
 		statsPanel.add(stats);
 		statsPanel.add(Box.createVerticalGlue());
 		topPanel.add(statsPanel);
-stats.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				newFrame();
-			}
-		});
-		
+	
 		getContentPane().add(topPanel, BorderLayout.CENTER);	
 		
 		//----- TIMERS -----//
@@ -213,6 +180,10 @@ stats.addMouseListener(new MouseListener() {
 			}
 		});
 		
+		//----- RECORDS -----//
+		
+		records = new Record();
+		
 		//----- ACTIONS -----//
 		
 		//SKIP ACTION 
@@ -245,11 +216,36 @@ stats.addMouseListener(new MouseListener() {
 		});
 		
 		//VIEW STATS ACTION
-		stats.addMouseListener(new MouseAdapter()  
-		{  
-			 public void mouseClicked(MouseEvent e) {
-			 }
-		}); 
+		stats.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				newFrame();
+			}
+		});
 	}
 	
 	public void start() {
@@ -297,40 +293,58 @@ stats.addMouseListener(new MouseListener() {
 		BoxLayout satLayout = new BoxLayout(satPanel , BoxLayout.Y_AXIS);
 		BoxLayout sunLayout = new BoxLayout(sunPanel , BoxLayout.Y_AXIS);
 		monPanel.setLayout(monLayout);
-		mon = new JLabel("Mon");
-		monCount = new JLabel("0");
+		
+		//JLABEL BUILDER
+		
+		//MONDAY
+		mon = new JLabelBuilder().text("Mon").build();
+		monCount = new JLabelBuilder().text("0").build();
 		monPanel.add(mon);
 		monPanel.add(monCount);
-		tue = new JLabel("Tue");
-		tueCount = new JLabel("0");
+		
+		//TUESDAY 
+		tue = new JLabelBuilder().text("Tue").build();
+		tueCount = new JLabelBuilder().text("0").build();
 		tuePanel.setLayout(tueLayout);
 		tuePanel.add(tue);
 		tuePanel.add(tueCount);
-		wed = new JLabel("Wed");
-		wedCount = new JLabel("0");
+		
+		//WEDNESDAY
+		wed = new JLabelBuilder().text("Wed").build();
+		wedCount = new JLabelBuilder().text("0").build();
 		wedPanel.setLayout(wedLayout);
 		wedPanel.add(wed);
 		wedPanel.add(wedCount);
-		thu = new JLabel("Thu");
-		thuCount = new JLabel("0");
+		
+		//THURSDAY
+		thu = new JLabelBuilder().text("Thu").build();
+		thuCount = new JLabelBuilder().text("0").build();
 		thuPanel.setLayout(thuLayout);
 		thuPanel.add(thu);
 		thuPanel.add(thuCount);
-		fri = new JLabel("Fri");
-		friCount = new JLabel("0");
+		
+		//FRIDAY
+		fri = new JLabelBuilder().text("Fri").build();
+		friCount = new JLabelBuilder().text("0").build();
 		friPanel.setLayout(friLayout);
 		friPanel.add(fri);
 		friPanel.add(friCount);
-		sat = new JLabel("Sat");
-		satCount = new JLabel("0");
+		
+		//SATURDAY
+		sat = new JLabelBuilder().text("Sat").build();
+		satCount = new JLabelBuilder().text("0").build();
 		satPanel.setLayout(satLayout);
 		satPanel.add(sat);
 		satPanel.add(satCount);
-		sun = new JLabel("Sun");
-		sunCount = new JLabel("0");
+		
+		//SUNDAY
+		sun = new JLabelBuilder().text("Sun").build();
+		sunCount = new JLabelBuilder().text("0").build();
 		sunPanel.setLayout(sunLayout);
 		sunPanel.add(sun);
 		sunPanel.add(sunCount);
+		
+		
 		JPanel logPanel = new JPanel();
 		logPanel.add(monPanel);
 		logPanel.add(tuePanel);
@@ -342,6 +356,7 @@ stats.addMouseListener(new MouseListener() {
 		logFrame.add(logPanel);
 		
 		records.read();
+		
 		//INIT WEEk
 		ArrayList<Week> week = records.getWeek();
 		monCount.setText(Integer.toString(week.get(0).getWeek()));
