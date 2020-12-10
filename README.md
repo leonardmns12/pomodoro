@@ -2,6 +2,7 @@ Pomodoro FLA Project
 
 Design Pattern Implemented :
 1. Builder
+2. Facade
 
 Created By :
 2201783412 - Michael 
