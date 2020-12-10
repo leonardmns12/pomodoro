@@ -1,5 +1,7 @@
 package state;
 
+import java.io.FileWriter;
+
 public class Start extends TimerState {
 	TimerState Source;
 	int second;
@@ -41,27 +43,25 @@ public class Start extends TimerState {
 		if(elapsedTime < 0) {
 			changeState();
 		}
+		
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	}
 	
 	@Override
 	public TimerState pomodoro() {
-		elapsedTime = 1500000;
-		elapsedTime = elapsedTime - 1000;
+		elapsedTime = 1501000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	} 
 	
 	@Override
 	public TimerState shortBreak() {
-		elapsedTime = 300000;
-		elapsedTime = elapsedTime - 1000;
+		elapsedTime = 301000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	}
 
 	@Override
 	protected TimerState longBreak() {
-		elapsedTime = 900000;
-		elapsedTime = elapsedTime - 1000;
+		elapsedTime = 901000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , 1);
 	}
 	
@@ -73,7 +73,7 @@ public class Start extends TimerState {
 		} else if(state % 2 != 0 && state < 8) {
 			System.out.println("starting work");
 			pomodoro();
-		} else if(state == 8){
+		} else if(state == 8) {
 			System.out.println("starting longBreak");
 			longBreak();
 		} else {
@@ -90,6 +90,4 @@ public class Start extends TimerState {
 	protected void skipState() {
 		changeState();
 	}
-
-
 }

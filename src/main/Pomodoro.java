@@ -2,30 +2,27 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import builder.JButtonBuilder;
+import builder.JLabelBuilder;
 import state.Timers;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.SystemColor;
 
 public class Pomodoro extends JFrame {
-	private JLabel time;
-	private JButton start, pause, skip, pomodoroBtn, shortBreakBtn, longBreakBtn;
-	int minute = 0, second = 0;
-	String str_minute = String.format("%02d", minute);
-	String str_second = String.format("%02d", second);
-	boolean isStarted = false;
-	Timer timer;
-	private JPanel panel , midPanel , botPanel;
-	private JLabel phase1,phase2,phase3,phase4;
+	private JPanel topPanel, midPanel, botPanel, statsPanel;
+	private JLabel time, phase1, phase2, phase3, phase4, stats;
+	private JButton start, skip;
+	private int minute = 0, second = 0;
+	private String str_minute = String.format("%02d", minute);
+	private String str_second = String.format("%02d", second);
+	private boolean isStarted = false;
+	private Timer timer;
 	
 	public Pomodoro() {
 		//RUN WINDOW
@@ -34,10 +31,76 @@ public class Pomodoro extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+		setIconImage(new ImageIcon(getClass().getResource("/res/tomato.png")).getImage());
 		setTitle("Pomodoro");
 	}
 	
 	public void init() {
+		//----- UI -----//
+		
+		//BORDER
+		Border emptyBorder = BorderFactory.createEmptyBorder();
+		
+		//JBUTTON BUILDER
+		start = new JButtonBuilder().icon("/res/play.png").background(Color.decode("#f55442")).border(emptyBorder).focus(false).visible(true).build();
+		skip =  new JButtonBuilder().icon("/res/skip.png").background(Color.decode("#f55442")).border(emptyBorder).focus(false).visible(false).build();
+		
+		//JLABEL BUILDER
+		time = new JLabelBuilder().text(str_minute + ":" + str_second).font("Verdana", 65).build();
+		time.setAlignmentX(Component.CENTER_ALIGNMENT);
+		phase1 = new JLabelBuilder().icon("/res/outline_dot.png").border(new EmptyBorder(0, 3, 0, 3)).build();
+		phase2 = new JLabelBuilder().icon("/res/outline_dot.png").border(new EmptyBorder(0, 3, 0, 3)).build();
+		phase3 = new JLabelBuilder().icon("/res/outline_dot.png").border(new EmptyBorder(0, 3, 0, 3)).build();
+		phase4 = new JLabelBuilder().icon("/res/outline_dot.png").border(new EmptyBorder(0, 3, 0, 3)).build();
+		
+		//-- TOP PANEL --//
+		topPanel = new JPanel();
+		topPanel.setBackground(Color.decode("#f55442"));
+		BoxLayout boxLayout = new BoxLayout(topPanel, BoxLayout.Y_AXIS);
+		topPanel.setLayout(boxLayout);
+		
+		//TOP PANEL SPACER
+		Component topLayoutSpacer = Box.createVerticalStrut(20);
+		topPanel.add(topLayoutSpacer);
+		topPanel.add(time);
+		
+		//-- MID PANNEL --//
+		midPanel = new JPanel();
+		midPanel.setBackground(Color.decode("#f55442"));
+		midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
+		midPanel.add(start);
+		midPanel.add(skip);
+		topPanel.add(midPanel);
+		
+		//-- BOT PANEL --//
+		botPanel = new JPanel();
+		botPanel.setBackground(Color.decode("#f55442"));
+		botPanel.setLayout(new BoxLayout(botPanel, BoxLayout.LINE_AXIS));
+		botPanel.add(phase1);
+		botPanel.add(phase2);
+		botPanel.add(phase3);
+		botPanel.add(phase4);
+
+		//BOT PANEL SPACER
+		Component botLayoutSpacer = Box.createVerticalStrut(20);
+		topPanel.add(botLayoutSpacer);
+		topPanel.add(botPanel);
+		
+		//-- STATS PANEL --//
+		statsPanel = new JPanel();
+		statsPanel.setBackground(Color.decode("#f55442"));
+		statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.X_AXIS));
+		statsPanel.add(Box.createHorizontalGlue());
+		statsPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
+		stats = new JLabel("view stats");
+		statsPanel.add(stats);
+		statsPanel.add(Box.createVerticalGlue());
+		topPanel.add(statsPanel);
+		
+		getContentPane().add(topPanel, BorderLayout.CENTER);	
+		
+		//----- TIMERS -----//
+		
 		Timers timers = new Timers(1500000);
 		timer = new Timer(1000, new ActionListener() {
 			@Override
@@ -47,29 +110,33 @@ public class Pomodoro extends JFrame {
 	    		setDot(timers.printState());
 	    		System.out.println(timers.printState());
 	    		if(timers.printState() % 2 == 0 && timers.printState() < 8) {
-	    			panel.setBackground(Color.blue);
-	    			start.setBackground(Color.blue);
-	    			skip.setBackground(Color.blue);
-	    			midPanel.setBackground(Color.blue);
-	    			botPanel.setBackground(Color.blue);
+	    			topPanel.setBackground(Color.decode("#1e8270"));
+	    			midPanel.setBackground(Color.decode("#1e8270"));
+	    			botPanel.setBackground(Color.decode("#1e8270"));
+	    			statsPanel.setBackground(Color.decode("#1e8270"));
+	    			start.setBackground(Color.decode("#1e8270"));
+	    			skip.setBackground(Color.decode("#1e8270"));
 	    		} else if(timers.printState() % 2 != 0 && timers.printState() < 8) {
-	    			panel.setBackground(Color.red);
-	    			start.setBackground(Color.red);
-	    			skip.setBackground(Color.red);
-	    			midPanel.setBackground(Color.red);
-	    			botPanel.setBackground(Color.red);
-	    		} else if(timers.printState() == 8){
-	    			panel.setBackground(Color.yellow);
-	    			start.setBackground(Color.yellow);
-	    			skip.setBackground(Color.yellow);
-	    			midPanel.setBackground(Color.yellow);
-	    			botPanel.setBackground(Color.yellow);
+	    			topPanel.setBackground(Color.decode("#f55442"));
+	    			start.setBackground(Color.decode("#f55442"));
+	    			skip.setBackground(Color.decode("#f55442"));
+	    			midPanel.setBackground(Color.decode("#f55442"));
+	    			botPanel.setBackground(Color.decode("#f55442"));
+	    			statsPanel.setBackground(Color.decode("#f55442"));
+	    		} else if(timers.printState() == 8) {
+	    			topPanel.setBackground(Color.decode("#fff75c"));
+	    			start.setBackground(Color.decode("#fff75c"));
+	    			skip.setBackground(Color.decode("#fff75c"));
+	    			midPanel.setBackground(Color.decode("#fff75c"));
+	    			botPanel.setBackground(Color.decode("#fff75c"));
+	    			statsPanel.setBackground(Color.decode("#fff75c"));
 	    		} else {
-	    			panel.setBackground(Color.green);
+	    			topPanel.setBackground(Color.green);
 	    			start.setBackground(Color.green);
 	    			skip.setBackground(Color.green);
 	    			midPanel.setBackground(Color.green);
 	    			botPanel.setBackground(Color.green);
+	    			statsPanel.setBackground(Color.green);
 	    			timers.resetTime();
 	    			stop();
 	    			time.setText("00:00");
@@ -109,55 +176,9 @@ public class Pomodoro extends JFrame {
 			}
 		});
 		
-		//TOP PANEL
-		panel = new JPanel();
-		BoxLayout boxLayout = new BoxLayout(panel , BoxLayout.Y_AXIS);
-		panel.setLayout(boxLayout);
-		panel.setBackground(Color.red);
-		minute = 0;
-		second = 0;
+		//----- ACTIONS -----//
 		
-		//MID PANNEL
-		midPanel = new JPanel();
-		midPanel.setBackground(Color.red);
-		
-		//BOT PANEL
-		botPanel = new JPanel();
-		botPanel.setBackground(Color.red);
-		
-		//
-		phase1 = new JLabel(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		phase2 = new JLabel(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		phase3 = new JLabel(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		phase4 = new JLabel(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		botPanel.add(phase1);
-		botPanel.add(phase2);
-		botPanel.add(phase3);
-		botPanel.add(phase4);
-		
-		start = new JButton(new ImageIcon(getClass().getResource("/res/play.png")));
-		start.setBackground(Color.red);
-		start.setFocusPainted(false);
-		Border border = BorderFactory.createEmptyBorder();
-		start.setBorder(border);
-		start.setAlignmentX(Component.CENTER_ALIGNMENT);
-		start.setAlignmentY(Component.CENTER_ALIGNMENT);
-		String str_minute = String.format("%02d", minute);
-		String str_second = String.format("%02d" , second);
-		time = new JLabel(str_minute + ":" + str_second);
-		time.setFont(new Font("Verdana" , Font.PLAIN , 40));
-		time.setAlignmentX(Component.CENTER_ALIGNMENT);
-		skip = new JButton(new ImageIcon(getClass().getResource("/res/skip.png")));
-		skip.setBackground(Color.red);
-		skip.setFocusPainted(false);
-		skip.setAlignmentX(Component.CENTER_ALIGNMENT);
-		skip.setVisible(false);
-		midPanel.add(start);
-		midPanel.add(skip);
-		panel.add(time); 
-		panel.add(midPanel);
-		panel.add(botPanel);
-		add(panel , BorderLayout.CENTER);	
+		//SKIP ACTION 
 		skip.addActionListener(new ActionListener() {
 			
 			@Override
@@ -166,6 +187,8 @@ public class Pomodoro extends JFrame {
 				timers.skipState();
 			}
 		});
+		
+		//START ACTION
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -183,6 +206,13 @@ public class Pomodoro extends JFrame {
 				
 			}
 		});
+		
+		//VIEW STATS ACTION
+		stats.addMouseListener(new MouseAdapter()  
+		{  
+			 public void mouseClicked(MouseEvent e) {
+			 }
+		}); 
 	}
 	
 	public void start() {
