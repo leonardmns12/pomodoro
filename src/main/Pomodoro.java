@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -23,6 +26,7 @@ public class Pomodoro extends JFrame {
 	private String str_second = String.format("%02d", second);
 	private boolean isStarted = false;
 	private Timer timer;
+	private Record records;
 	
 	public Pomodoro() {
 		//RUN WINDOW
@@ -37,6 +41,8 @@ public class Pomodoro extends JFrame {
 	
 	public void init() {
 		//----- UI -----//
+		
+		records = new Record();
 		
 		//BORDER
 		Border emptyBorder = BorderFactory.createEmptyBorder();
@@ -96,6 +102,37 @@ public class Pomodoro extends JFrame {
 		statsPanel.add(stats);
 		statsPanel.add(Box.createVerticalGlue());
 		topPanel.add(statsPanel);
+stats.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				newFrame();
+			}
+		});
 		
 		getContentPane().add(topPanel, BorderLayout.CENTER);	
 		
@@ -108,7 +145,6 @@ public class Pomodoro extends JFrame {
 				time.setText(timers.printTime());
 	    		timers.Start();
 	    		setDot(timers.printState());
-	    		System.out.println(timers.printState());
 	    		if(timers.printState() % 2 == 0 && timers.printState() < 8) {
 	    			topPanel.setBackground(Color.decode("#1e8270"));
 	    			midPanel.setBackground(Color.decode("#1e8270"));
@@ -145,6 +181,7 @@ public class Pomodoro extends JFrame {
 	    			isStarted = false;
 	    			skip.setVisible(false);
 	    			System.out.println("pomodoro finish!");
+	    			records.write("finish");
 	    		}
 			}
 
@@ -234,5 +271,85 @@ public class Pomodoro extends JFrame {
 		phase2.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
 		phase3.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
 		phase4.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
+	}
+	
+	public void newFrame() {
+		JFrame logFrame = new JFrame();
+		logFrame.setVisible(true);
+		logFrame.setSize(500 , 100);
+		logFrame.setLocationRelativeTo(null);
+		logFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		JLabel mon,tue,wed,thu,fri,sat,sun;
+		JLabel monCount , tueCount , wedCount , thuCount , friCount, satCount ,sunCount;
+		JPanel monPanel, tuePanel , wedPanel, thuPanel, friPanel , satPanel , sunPanel;
+		monPanel = new JPanel();
+		tuePanel = new JPanel();
+		wedPanel = new JPanel();
+		thuPanel = new JPanel();
+		friPanel = new JPanel();
+		satPanel = new JPanel();
+		sunPanel = new JPanel();
+		BoxLayout monLayout = new BoxLayout(monPanel , BoxLayout.Y_AXIS);
+		BoxLayout tueLayout = new BoxLayout(tuePanel , BoxLayout.Y_AXIS);
+		BoxLayout wedLayout = new BoxLayout(wedPanel , BoxLayout.Y_AXIS);
+		BoxLayout thuLayout = new BoxLayout(thuPanel , BoxLayout.Y_AXIS);
+		BoxLayout friLayout = new BoxLayout(friPanel , BoxLayout.Y_AXIS);
+		BoxLayout satLayout = new BoxLayout(satPanel , BoxLayout.Y_AXIS);
+		BoxLayout sunLayout = new BoxLayout(sunPanel , BoxLayout.Y_AXIS);
+		monPanel.setLayout(monLayout);
+		mon = new JLabel("Mon");
+		monCount = new JLabel("0");
+		monPanel.add(mon);
+		monPanel.add(monCount);
+		tue = new JLabel("Tue");
+		tueCount = new JLabel("0");
+		tuePanel.setLayout(tueLayout);
+		tuePanel.add(tue);
+		tuePanel.add(tueCount);
+		wed = new JLabel("Wed");
+		wedCount = new JLabel("0");
+		wedPanel.setLayout(wedLayout);
+		wedPanel.add(wed);
+		wedPanel.add(wedCount);
+		thu = new JLabel("Thu");
+		thuCount = new JLabel("0");
+		thuPanel.setLayout(thuLayout);
+		thuPanel.add(thu);
+		thuPanel.add(thuCount);
+		fri = new JLabel("Fri");
+		friCount = new JLabel("0");
+		friPanel.setLayout(friLayout);
+		friPanel.add(fri);
+		friPanel.add(friCount);
+		sat = new JLabel("Sat");
+		satCount = new JLabel("0");
+		satPanel.setLayout(satLayout);
+		satPanel.add(sat);
+		satPanel.add(satCount);
+		sun = new JLabel("Sun");
+		sunCount = new JLabel("0");
+		sunPanel.setLayout(sunLayout);
+		sunPanel.add(sun);
+		sunPanel.add(sunCount);
+		JPanel logPanel = new JPanel();
+		logPanel.add(monPanel);
+		logPanel.add(tuePanel);
+		logPanel.add(wedPanel);
+		logPanel.add(thuPanel);
+		logPanel.add(friPanel);
+		logPanel.add(satPanel);
+		logPanel.add(sunPanel);
+		logFrame.add(logPanel);
+		
+		records.read();
+		//INIT WEEk
+		ArrayList<Week> week = records.getWeek();
+		monCount.setText(Integer.toString(week.get(0).getWeek()));
+		tueCount.setText(Integer.toString(week.get(1).getWeek()));
+		wedCount.setText(Integer.toString(week.get(2).getWeek()));
+		thuCount.setText(Integer.toString(week.get(3).getWeek()));
+		friCount.setText(Integer.toString(week.get(4).getWeek()));
+		satCount.setText(Integer.toString(week.get(5).getWeek()));
+		sunCount.setText(Integer.toString(week.get(6).getWeek()));
 	}
 }
