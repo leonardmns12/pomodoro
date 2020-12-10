@@ -4,6 +4,7 @@ Design Pattern Implemented :
 1. Builder
 2. Facade
 3. State
+4. Template
 
 Created By :
 2201783412 - Michael 
