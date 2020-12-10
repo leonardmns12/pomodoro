@@ -2,9 +2,13 @@ package builder;
 
 import java.awt.Color;
 import java.awt.Font;
+
+import javax.print.DocFlavor.STRING;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.Border;
+
+import facade.FontFacade;
 
 public class JButtonBuilder {
 	private JButton jButton;
@@ -33,8 +37,9 @@ public class JButtonBuilder {
 		return this;
 	}
 	
-	public JButtonBuilder font(String name, int size) {
-		jButton.setFont(new Font(name , Font.PLAIN , size));
+	public JButtonBuilder font(String name, int size, String style) {
+		FontFacade fontFacade = new FontFacade();
+		jButton.setFont(fontFacade.create(name, size, style));
 		return this;
 	}
 	
