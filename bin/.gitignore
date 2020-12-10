@@ -4,6 +4,7 @@
 /.project
 /Lato-Regular.ttf
 /builder/
+/facade/
 /filled_dot.png
 /log.csv
 /main/
@@ -13,7 +14,6 @@
 /res/
 /skip.png
 /state/
+/template/
 /tomato.png
 /twotone_dot.png
-/log.csv
-/facade/
