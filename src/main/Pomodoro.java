@@ -15,12 +15,17 @@ import javax.swing.border.EmptyBorder;
 import builder.JButtonBuilder;
 import builder.JLabelBuilder;
 import state.Timers;
+import template.FinishTemplate;
+import template.LongBreakTemplate;
+import template.PomodoroTemplate;
+import template.ShortBreakTemplate;
+
 import java.awt.Component;
 
 public class Pomodoro extends JFrame {
-	private JPanel topPanel, midPanel, botPanel, statsPanel;
+	public JPanel topPanel, midPanel, botPanel, statsPanel;
 	private JLabel time, phase1, phase2, phase3, phase4, stats;
-	private JButton start, skip;
+	public JButton start, skip;
 	private int minute = 0, second = 0;
 	private String str_minute = String.format("%02d", minute);
 	private String str_second = String.format("%02d", second);
@@ -104,6 +109,10 @@ public class Pomodoro extends JFrame {
 		getContentPane().add(topPanel, BorderLayout.CENTER);	
 		
 		//----- TIMERS -----//
+		ShortBreakTemplate shortBreakTemplate = new ShortBreakTemplate(this);
+		LongBreakTemplate longBreakTemplate = new LongBreakTemplate(this);
+		FinishTemplate finishTemplate = new FinishTemplate(this);
+		PomodoroTemplate pomodoroTemplate = new PomodoroTemplate(this);
 		
 		Timers timers = new Timers(1500000);
 		timer = new Timer(1000, new ActionListener() {
@@ -113,33 +122,14 @@ public class Pomodoro extends JFrame {
 	    		timers.Start();
 	    		setDot(timers.printState());
 	    		if(timers.printState() % 2 == 0 && timers.printState() < 8) {
-	    			topPanel.setBackground(Color.decode("#1e8270"));
-	    			midPanel.setBackground(Color.decode("#1e8270"));
-	    			botPanel.setBackground(Color.decode("#1e8270"));
-	    			statsPanel.setBackground(Color.decode("#1e8270"));
-	    			start.setBackground(Color.decode("#1e8270"));
-	    			skip.setBackground(Color.decode("#1e8270"));
+	    			shortBreakTemplate.setView(Color.decode("#1e8270"));
 	    		} else if(timers.printState() % 2 != 0 && timers.printState() < 8) {
-	    			topPanel.setBackground(Color.decode("#f55442"));
-	    			start.setBackground(Color.decode("#f55442"));
-	    			skip.setBackground(Color.decode("#f55442"));
-	    			midPanel.setBackground(Color.decode("#f55442"));
-	    			botPanel.setBackground(Color.decode("#f55442"));
-	    			statsPanel.setBackground(Color.decode("#f55442"));
+	    			pomodoroTemplate.setView(Color.decode("#f55442"));
+	    			skip.setVisible(false);
 	    		} else if(timers.printState() == 8) {
-	    			topPanel.setBackground(Color.decode("#fff75c"));
-	    			start.setBackground(Color.decode("#fff75c"));
-	    			skip.setBackground(Color.decode("#fff75c"));
-	    			midPanel.setBackground(Color.decode("#fff75c"));
-	    			botPanel.setBackground(Color.decode("#fff75c"));
-	    			statsPanel.setBackground(Color.decode("#fff75c"));
+	    			longBreakTemplate.setView(Color.decode("#fff75c"));
 	    		} else {
-	    			topPanel.setBackground(Color.green);
-	    			start.setBackground(Color.green);
-	    			skip.setBackground(Color.green);
-	    			midPanel.setBackground(Color.green);
-	    			botPanel.setBackground(Color.green);
-	    			statsPanel.setBackground(Color.green);
+	    			finishTemplate.setView(Color.green);
 	    			timers.resetTime();
 	    			stop();
 	    			time.setText("00:00");
