@@ -3,6 +3,7 @@ Pomodoro FLA Project
 Design Pattern Implemented :
 1. Builder
 2. Facade
+3. State
 
 Created By :
 2201783412 - Michael 
