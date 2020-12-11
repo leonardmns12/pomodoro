@@ -64,7 +64,7 @@ public class Record {
 		Calendar cal = Calendar.getInstance();
 		Date fromDate;
 		try {
-			fromDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ssX").parse(date);
+			fromDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
 			cal.setTime(fromDate);
 			cal.add(Calendar.DATE, 7);
 			if(cal.getTime().compareTo(new Date()) < 0) {
