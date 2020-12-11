@@ -11,7 +11,6 @@ public class PomodoroTemplate extends TimerTemplate{
 	
 	public PomodoroTemplate(Pomodoro pomodoro) {
 		this.pomodoro = pomodoro;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -25,7 +24,6 @@ public class PomodoroTemplate extends TimerTemplate{
 
 	@Override
 	public void setButtonBackground(Color color) {
-		// TODO Auto-generated method stub
 		pomodoro.start.setBackground(color);
 		pomodoro.skip.setBackground(color);
 	}

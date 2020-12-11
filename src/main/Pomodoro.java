@@ -31,6 +31,7 @@ public class Pomodoro extends JFrame {
 	private String str_second = String.format("%02d", second);
 	private boolean isStarted = false;
 	private Timer timer;
+	private Timers timers;
 	private Record records;
 	
 	public Pomodoro() {
@@ -109,37 +110,19 @@ public class Pomodoro extends JFrame {
 		getContentPane().add(topPanel, BorderLayout.CENTER);	
 		
 		//----- TIMERS -----//
-		ShortBreakTemplate shortBreakTemplate = new ShortBreakTemplate(this);
-		LongBreakTemplate longBreakTemplate = new LongBreakTemplate(this);
-		FinishTemplate finishTemplate = new FinishTemplate(this);
-		PomodoroTemplate pomodoroTemplate = new PomodoroTemplate(this);
-		
-		Timers timers = new Timers(1500000);
+		timers = new Timers(1500000);
 		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				time.setText(timers.printTime());
+				if(timers.printState() == 1 || timers.printState() == 3 || timers.printState() == 5) {
+					skip.setVisible(false);
+				} else {
+					skip.setVisible(true);
+				}
 	    		timers.Start();
 	    		setDot(timers.printState());
-	    		if(timers.printState() % 2 == 0 && timers.printState() < 8) {
-	    			shortBreakTemplate.setView(Color.decode("#1e8270"));
-	    		} else if(timers.printState() % 2 != 0 && timers.printState() < 8) {
-	    			pomodoroTemplate.setView(Color.decode("#f55442"));
-	    			skip.setVisible(false);
-	    		} else if(timers.printState() == 8) {
-	    			longBreakTemplate.setView(Color.decode("#fff75c"));
-	    		} else {
-	    			finishTemplate.setView(Color.green);
-	    			timers.resetTime();
-	    			stop();
-	    			time.setText("00:00");
-	    			emptyDot();
-	    			start.setIcon(new ImageIcon(getClass().getResource("/res/play.png")));
-	    			isStarted = false;
-	    			skip.setVisible(false);
-	    			System.out.println("pomodoro finish!");
-	    			records.write("finish");
-	    		}
+	    		refreshLayout(timers.printState());
 			}
 
 			private void setDot(int printState) {
@@ -181,8 +164,12 @@ public class Pomodoro extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				timers.skipState();
+				stop();
+				refreshLayout(timers.printState());
+				time.setText(timers.printTime());
+				isStarted = false;
+				start.setIcon(new ImageIcon(getClass().getResource("/res/play.png")));
 			}
 		});
 		
@@ -194,7 +181,6 @@ public class Pomodoro extends JFrame {
 					start();
 					start.setIcon(new ImageIcon(getClass().getResource("/res/pause.png")));
 					isStarted = true;
-					skip.setVisible(true);
 				}else {
 					stop();
 					start.setIcon(new ImageIcon(getClass().getResource("/res/play.png")));
@@ -356,5 +342,31 @@ public class Pomodoro extends JFrame {
 		friCount.setText(Integer.toString(week.get(4).getWeek()));
 		satCount.setText(Integer.toString(week.get(5).getWeek()));
 		sunCount.setText(Integer.toString(week.get(6).getWeek()));
+	}
+	
+	public void refreshLayout(int state) {
+		ShortBreakTemplate shortBreakTemplate = new ShortBreakTemplate(this);
+		LongBreakTemplate longBreakTemplate = new LongBreakTemplate(this);
+		FinishTemplate finishTemplate = new FinishTemplate(this);
+		PomodoroTemplate pomodoroTemplate = new PomodoroTemplate(this);
+		if(state % 2 == 0 && state < 8) {
+			shortBreakTemplate.setView(Color.decode("#1e8270"));
+		} else if(state % 2 != 0 && state < 8) {
+			pomodoroTemplate.setView(Color.decode("#f55442"));
+			skip.setVisible(false);
+		} else if(state == 8) {
+			longBreakTemplate.setView(Color.decode("#fff75c"));
+		} else {
+			finishTemplate.setView(Color.green);
+			stop();
+			timers.resetTime();
+			time.setText("00:00");
+			emptyDot();
+			start.setIcon(new ImageIcon(getClass().getResource("/res/play.png")));
+			isStarted = false;
+			skip.setVisible(false);
+			System.out.println("pomodoro finish!");
+			records.write("finish");
+		}
 	}
 }

@@ -2,7 +2,6 @@ package main;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,17 +19,17 @@ public class Record {
 	protected ArrayList<Week> week = new ArrayList<Week>();
 	
 	public Record() {
-		try {
-			file = new File(getClass().getResource("/res/log.csv").getFile());
-			fw = new FileWriter(file , true);
-			init();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		init();
 	}
 
 	public void write(String text) {
+		try {
+			file = new File(getClass().getResource("/res/log.csv").getFile());
+			fw = new FileWriter(file , true);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ssX");
 		try {
 			fw.write(sdf.format(new Date()));
@@ -38,7 +37,7 @@ public class Record {
 			fw.write("\n");
 			fw.close();
 		}catch(IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
@@ -51,11 +50,11 @@ public class Record {
 			    text = row.split(",");
 			    data.add(text[0]);
 			}
-			//TODO add data from last 7 days
 			csvReader.close();
-			check(data);
+			for(int i = 0; i < data.size(); i++) {
+				exceedWeek(data.get(i));
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -64,32 +63,20 @@ public class Record {
 		Calendar cal = Calendar.getInstance();
 		Date fromDate;
 		try {
-			fromDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
+			fromDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ssX").parse(date);
 			cal.setTime(fromDate);
 			cal.add(Calendar.DATE, 7);
+			int day = cal.get(Calendar.DAY_OF_WEEK) - 1;
 			if(cal.getTime().compareTo(new Date()) < 0) {
 				return false;
 			} else {
-				int day = cal.get(Calendar.DAY_OF_WEEK) - 1;
-				int count = week.get(day-1).getWeek() + 1;
-				week.get(day-1).setWeek(count);
+				week.get(day-1).setWeek(week.get(day-1).getWeek() + 1);
 				return true;
 			}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
 		return false;
-	}
-	
-	private void check(ArrayList<String> data) {
-		for(int i = 0; i < data.size(); i++) {
-			if(exceedWeek(data.get(i))) {
-				
-			} else {
-				
-			}
-		}
 	}
 	
 	public ArrayList<Week> getWeek() {

@@ -1,7 +1,5 @@
 package state;
 
-import java.io.FileWriter;
-
 public class Start extends TimerState {
 	TimerState Source;
 	int second;
@@ -43,40 +41,46 @@ public class Start extends TimerState {
 		if(elapsedTime < 0) {
 			changeState();
 		}
-		
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	}
 	
 	@Override
 	public TimerState pomodoro() {
-		elapsedTime = 1501000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	} 
 	
 	@Override
 	public TimerState shortBreak() {
-		elapsedTime = 301000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , state);
 	}
 
 	@Override
 	protected TimerState longBreak() {
-		elapsedTime = 901000;
 		return new Start(this, (elapsedTime / 1000) % 60, (elapsedTime / 60000) % 60, elapsedTime , 1);
 	}
 	
 	public void changeState() {
 		this.state++;
 		if(state % 2 == 0 && state < 8) {
+			elapsedTime = 300000;
+			second = (elapsedTime / 1000) % 60;
+			minute = (elapsedTime / 60000) % 60;
 			System.out.println("starting shortBreak");
 			shortBreak();
 		} else if(state % 2 != 0 && state < 8) {
+			elapsedTime = 1500000;
+			second = (elapsedTime / 1000) % 60;
+			minute = (elapsedTime / 60000) % 60;
 			System.out.println("starting work");
 			pomodoro();
 		} else if(state == 8) {
+			elapsedTime = 900000;
+			second = (elapsedTime / 1000) % 60;
+			minute = (elapsedTime / 60000) % 60;
 			System.out.println("starting longBreak");
 			longBreak();
 		} else {
+			elapsedTime = 1500000;
 			pomodoro();
 		}
 	}
