@@ -24,14 +24,14 @@ import java.awt.Component;
 
 public class Pomodoro extends JFrame {
 	public JPanel topPanel, midPanel, botPanel, statsPanel;
-	private JLabel time, phase1, phase2, phase3, phase4, stats;
+	public JLabel time, phase1, phase2, phase3, phase4, stats;
 	public JButton start, skip;
 	private int minute = 0, second = 0;
 	private String str_minute = String.format("%02d", minute);
 	private String str_second = String.format("%02d", second);
-	private boolean isStarted = false;
-	private Timer timer;
-	private Record records;
+	public boolean isStarted = false;
+	public Timer timer;
+	public Record records;
 	
 	public Pomodoro() {
 		//RUN WINDOW
@@ -125,20 +125,14 @@ public class Pomodoro extends JFrame {
 	    			shortBreakTemplate.setView(Color.decode("#1e8270"));
 	    		} else if(timers.printState() % 2 != 0 && timers.printState() < 8) {
 	    			pomodoroTemplate.setView(Color.decode("#f55442"));
-	    			skip.setVisible(false);
+	    			pomodoroTemplate.reset();
 	    		} else if(timers.printState() == 8) {
 	    			longBreakTemplate.setView(Color.decode("#fff75c"));
 	    		} else {
-	    			finishTemplate.setView(Color.green);
 	    			timers.resetTime();
 	    			stop();
 	    			time.setText("00:00");
-	    			emptyDot();
-	    			start.setIcon(new ImageIcon(getClass().getResource("/res/play.png")));
-	    			isStarted = false;
-	    			skip.setVisible(false);
-	    			System.out.println("pomodoro finish!");
-	    			records.write("finish");
+	    			finishTemplate.setView(Color.green);
 	    		}
 			}
 
@@ -250,13 +244,6 @@ public class Pomodoro extends JFrame {
 	
 	public void stop() {
 		timer.stop();
-	}
-	
-	public void emptyDot() {
-		phase1.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		phase2.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		phase3.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		phase4.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
 	}
 	
 	public void newFrame() {
