@@ -4,11 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -123,12 +121,14 @@ public class Pomodoro extends JFrame {
 	    		setDot(timers.printState());
 	    		if(timers.printState() % 2 == 0 && timers.printState() < 8) {
 	    			shortBreakTemplate.setView(Color.decode("#1e8270"));
-	    		} else if(timers.printState() % 2 != 0 && timers.printState() < 8) {
+	    		} 
+	    		else if(timers.printState() % 2 != 0 && timers.printState() < 8) {
 	    			pomodoroTemplate.setView(Color.decode("#f55442"));
-	    			pomodoroTemplate.reset();
-	    		} else if(timers.printState() == 8) {
+	    		} 
+	    		else if(timers.printState() == 8) {
 	    			longBreakTemplate.setView(Color.decode("#fff75c"));
-	    		} else {
+	    		} 
+	    		else {
 	    			timers.resetTime();
 	    			stop();
 	    			time.setText("00:00");
@@ -165,7 +165,6 @@ public class Pomodoro extends JFrame {
 		});
 		
 		//----- RECORDS -----//
-		
 		records = new Record();
 		
 		//----- ACTIONS -----//
@@ -175,7 +174,6 @@ public class Pomodoro extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				timers.skipState();
 			}
 		});
@@ -233,11 +231,10 @@ public class Pomodoro extends JFrame {
 	}
 	
 	public void start() {
-		Runnable myRunnable =
-		    new Runnable() {
-		        public void run() {
-		        	timer.start();
-		        }
+		Runnable myRunnable = new Runnable() {
+	        public void run() {
+	        	timer.start();
+	        }
 		};
 		myRunnable.run();
 	}
@@ -252,9 +249,9 @@ public class Pomodoro extends JFrame {
 		logFrame.setSize(500 , 100);
 		logFrame.setLocationRelativeTo(null);
 		logFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		JLabel mon,tue,wed,thu,fri,sat,sun;
-		JLabel monCount , tueCount , wedCount , thuCount , friCount, satCount ,sunCount;
-		JPanel monPanel, tuePanel , wedPanel, thuPanel, friPanel , satPanel , sunPanel;
+		JLabel mon, tue, wed, thu, fri, sat, sun;
+		JLabel monCount, tueCount, wedCount, thuCount, friCount, satCount, sunCount;
+		JPanel monPanel, tuePanel, wedPanel, thuPanel, friPanel, satPanel, sunPanel;
 		monPanel = new JPanel();
 		tuePanel = new JPanel();
 		wedPanel = new JPanel();

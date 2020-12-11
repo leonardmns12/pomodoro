@@ -38,8 +38,7 @@ public class JButtonBuilder {
 	}
 	
 	public JButtonBuilder font(String name, int size, String style) {
-		FontFacade fontFacade = new FontFacade();
-		jButton.setFont(fontFacade.create(name, size, style));
+		jButton.setFont(FontFacade.create(name, size, style));
 		return this;
 	}
 	

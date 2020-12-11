@@ -1,6 +1,6 @@
 package builder;
 
-import java.awt.Font;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -25,14 +25,18 @@ public class JLabelBuilder {
 		return this;
 	}
 	
+	public JLabelBuilder background(Color color) {
+		jLabel.setBackground(color);
+		return this;
+	}
+	
 	public JLabelBuilder border(Border border) {
 		jLabel.setBorder(border);
 		return this;
 	}
 	
 	public JLabelBuilder font(String name, int size, String style) {
-		FontFacade fontFacade = new FontFacade();
-		jLabel.setFont(fontFacade.create(name, size, style));
+		jLabel.setFont(FontFacade.create(name, size, style));
 		return this;
 	}
 	

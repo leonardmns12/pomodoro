@@ -15,8 +15,4 @@ public class JPanelBuilder {
 		jPanel.setBackground(color);
 		return this;
 	}
-	
-//	public JPanelBuilder layout(Layout layout) {
-//		return this;
-//	}
 }
