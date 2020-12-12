@@ -27,10 +27,10 @@ public class Pomodoro extends JFrame {
 	private int minute = 0, second = 0;
 	private String str_minute = String.format("%02d", minute);
 	private String str_second = String.format("%02d", second);
-	private boolean isStarted = false;
+	public boolean isStarted = false;
 	private Timer timer;
 	private Timers timers;
-	private Record records;
+	public Record records;
 	
 	public Pomodoro() {
 		//RUN WINDOW
