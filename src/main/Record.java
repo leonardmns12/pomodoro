@@ -19,6 +19,7 @@ public class Record {
 	protected ArrayList<Week> week = new ArrayList<Week>();
 	
 	public Record() {
+		file = new File(getClass().getResource("/res/log.csv").getFile());
 		init();
 	}
 
