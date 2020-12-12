@@ -238,10 +238,13 @@ public class Pomodoro extends JFrame {
 	
 	public void newFrame() {
 		JFrame logFrame = new JFrame();
-		logFrame.setVisible(true);
 		logFrame.setSize(500 , 100);
+		logFrame.setVisible(true);
+		logFrame.setIconImage(new ImageIcon(getClass().getResource("/res/tomato.png")).getImage());
+		logFrame.setTitle("Pomodoro");
 		logFrame.setLocationRelativeTo(null);
 		logFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 		JLabel mon, tue, wed, thu, fri, sat, sun;
 		JLabel monCount, tueCount, wedCount, thuCount, friCount, satCount, sunCount;
 		JPanel monPanel, tuePanel, wedPanel, thuPanel, friPanel, satPanel, sunPanel;
