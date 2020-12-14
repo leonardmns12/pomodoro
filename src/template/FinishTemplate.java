@@ -32,5 +32,6 @@ public class FinishTemplate extends TimerTemplate {
 	public void writeRecord() {
 		System.out.println("pomodoro finish!");
 		pomodoro.records.write("finish");
+		pomodoro.records.read();
 	}
 }
