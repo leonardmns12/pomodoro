@@ -114,8 +114,7 @@ public class Pomodoro extends JFrame {
 		getContentPane().add(topPanel, BorderLayout.CENTER);	
 		
 		//----- TIMERS -----//
-		//1500000
-		timers = new Timers(5000);
+		timers = new Timers(1500000);
 		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

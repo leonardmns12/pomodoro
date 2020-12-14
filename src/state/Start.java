@@ -62,29 +62,25 @@ public class Start extends TimerState {
 	public void changeState() {
 		this.state++;
 		if(state % 2 == 0 && state < 8) {
-			//300000
-			elapsedTime = 3000;
+			elapsedTime = 300000;
 			second = (elapsedTime / 1000) % 60;
 			minute = (elapsedTime / 60000) % 60;
 			System.out.println("starting shortBreak");
 			shortBreak();
 		} else if(state % 2 != 0 && state < 8) {
-			//1500000
-			elapsedTime = 5000;
+			elapsedTime = 1500000;
 			second = (elapsedTime / 1000) % 60;
 			minute = (elapsedTime / 60000) % 60;
 			System.out.println("starting work");
 			pomodoro();
 		} else if(state == 8) {
-			//900000
-			elapsedTime = 7000;
+			elapsedTime = 900000;
 			second = (elapsedTime / 1000) % 60;
 			minute = (elapsedTime / 60000) % 60;
 			System.out.println("starting longBreak");
 			longBreak();
 		} else {
-			//1500000
-			elapsedTime = 5000;
+			elapsedTime = 1500000;
 			pomodoro();
 		}
 	}
