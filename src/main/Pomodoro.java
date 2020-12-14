@@ -4,13 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -26,17 +24,17 @@ import java.awt.Component;
 
 public class Pomodoro extends JFrame {
 	public JPanel topPanel, midPanel, botPanel, statsPanel;
-	private JLabel time, phase1, phase2, phase3, phase4, stats;
+	public JLabel time, phase1, phase2, phase3, phase4, stats;
 	private JLabel monCount , tueCount , wedCount , thuCount , friCount, satCount ,sunCount;
 	public JButton start, skip;
 	private int minute = 0, second = 0;
 	private String str_minute = String.format("%02d", minute);
 	private String str_second = String.format("%02d", second);
-	private boolean isStarted = false;
+	public boolean isStarted = false;
 	private boolean isStatClicked = false;
 	private Timer timer;
 	private Timers timers;
-	private Record records;
+	public Record records;
 	
 	public Pomodoro() {
 		//RUN WINDOW
@@ -121,9 +119,11 @@ public class Pomodoro extends JFrame {
 				time.setText(timers.printTime());
 				if(timers.printState() == 1 || timers.printState() == 3 || timers.printState() == 5) {
 					skip.setVisible(false);
-				} else {
+				} 
+				else {
 					skip.setVisible(true);
 				}
+				
 	    		timers.Start();
 	    		setDot(timers.printState());
 	    		refreshLayout(timers.printState());
@@ -161,7 +161,6 @@ public class Pomodoro extends JFrame {
 		});
 		
 		//----- RECORDS -----//
-		
 		records = new Record();
 		
 		//----- ACTIONS -----//
@@ -235,11 +234,10 @@ public class Pomodoro extends JFrame {
 	}
 	
 	public void start() {
-		Runnable myRunnable =
-		    new Runnable() {
-		        public void run() {
-		        	timer.start();
-		        }
+		Runnable myRunnable = new Runnable() {
+	        public void run() {
+	        	timer.start();
+	        }
 		};
 		myRunnable.run();
 	}
@@ -248,22 +246,19 @@ public class Pomodoro extends JFrame {
 		timer.stop();
 	}
 	
-	public void emptyDot() {
-		phase1.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		phase2.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		phase3.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-		phase4.setIcon(new ImageIcon(getClass().getResource("/res/outline_dot.png")));
-	}
-	
 	public void newFrame() {
 		records.read();
 		JFrame logFrame = new JFrame();
-		logFrame.setVisible(true);
 		logFrame.setSize(500 , 100);
+		logFrame.setVisible(true);
+		logFrame.setIconImage(new ImageIcon(getClass().getResource("/res/tomato.png")).getImage());
+		logFrame.setTitle("Pomodoro");
 		logFrame.setLocationRelativeTo(null);
 		logFrame.setDefaultCloseOperation(HIDE_ON_CLOSE);
-		JLabel mon,tue,wed,thu,fri,sat,sun;
-		JPanel monPanel, tuePanel , wedPanel, thuPanel, friPanel , satPanel , sunPanel;
+		
+		JLabel mon, tue, wed, thu, fri, sat, sun;
+		JPanel monPanel, tuePanel, wedPanel, thuPanel, friPanel, satPanel, sunPanel;
+
 		monPanel = new JPanel();
 		tuePanel = new JPanel();
 		wedPanel = new JPanel();
@@ -271,6 +266,7 @@ public class Pomodoro extends JFrame {
 		friPanel = new JPanel();
 		satPanel = new JPanel();
 		sunPanel = new JPanel();
+		
 		BoxLayout monLayout = new BoxLayout(monPanel , BoxLayout.Y_AXIS);
 		BoxLayout tueLayout = new BoxLayout(tuePanel , BoxLayout.Y_AXIS);
 		BoxLayout wedLayout = new BoxLayout(wedPanel , BoxLayout.Y_AXIS);
@@ -418,13 +414,7 @@ public class Pomodoro extends JFrame {
 			stop();
 			timers.resetTime();
 			time.setText("00:00");
-			emptyDot();
-			start.setIcon(new ImageIcon(getClass().getResource("/res/play.png")));
-			isStarted = false;
-			skip.setVisible(false);
-			System.out.println("pomodoro finish!");
-			records.write("finish");
-			records.read();
+
 			if(isStatClicked) {
 				System.out.println("stat click");
 				initWeek();
