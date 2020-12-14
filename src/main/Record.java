@@ -15,12 +15,11 @@ public class Record {
 	
 	protected File file;
 	protected FileWriter fw;
-	protected ArrayList<String> data = new ArrayList<String>();
-	protected ArrayList<Week> week = new ArrayList<Week>();
+	protected ArrayList<String> data;
+	protected ArrayList<Week> week;
 	
 	public Record() {
 		file = new File(getClass().getResource("/res/log.csv").getFile());
-		init();
 	}
 
 	public void write(String text) {
@@ -44,7 +43,9 @@ public class Record {
 	
 	public void read() {
 		try {
+			init();
 			BufferedReader csvReader = new BufferedReader(new FileReader(file));
+			data = new ArrayList<String>();
 			String row;
 			String[] text;
 			while ((row = csvReader.readLine()) != null) {
@@ -85,6 +86,7 @@ public class Record {
 	}
 	
 	public void init() {
+		week = new ArrayList<Week>();
 		week.add(new Week(0));
 		week.add(new Week(0));
 		week.add(new Week(0));

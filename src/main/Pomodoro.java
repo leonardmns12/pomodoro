@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -25,11 +27,13 @@ import java.awt.Component;
 public class Pomodoro extends JFrame {
 	public JPanel topPanel, midPanel, botPanel, statsPanel;
 	private JLabel time, phase1, phase2, phase3, phase4, stats;
+	private JLabel monCount , tueCount , wedCount , thuCount , friCount, satCount ,sunCount;
 	public JButton start, skip;
 	private int minute = 0, second = 0;
 	private String str_minute = String.format("%02d", minute);
 	private String str_second = String.format("%02d", second);
 	private boolean isStarted = false;
+	private boolean isStatClicked = false;
 	private Timer timer;
 	private Timers timers;
 	private Record records;
@@ -110,7 +114,8 @@ public class Pomodoro extends JFrame {
 		getContentPane().add(topPanel, BorderLayout.CENTER);	
 		
 		//----- TIMERS -----//
-		timers = new Timers(1500000);
+		//1500000
+		timers = new Timers(5000);
 		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -123,6 +128,9 @@ public class Pomodoro extends JFrame {
 	    		timers.Start();
 	    		setDot(timers.printState());
 	    		refreshLayout(timers.printState());
+	    		if(isStatClicked) {
+	    			
+	    		}
 			}
 
 			private void setDot(int printState) {
@@ -219,7 +227,10 @@ public class Pomodoro extends JFrame {
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				newFrame();
+				if(!isStatClicked) {
+					newFrame();
+					isStatClicked = true;
+				}
 			}
 		});
 	}
@@ -246,13 +257,13 @@ public class Pomodoro extends JFrame {
 	}
 	
 	public void newFrame() {
+		records.read();
 		JFrame logFrame = new JFrame();
 		logFrame.setVisible(true);
 		logFrame.setSize(500 , 100);
 		logFrame.setLocationRelativeTo(null);
-		logFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		logFrame.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		JLabel mon,tue,wed,thu,fri,sat,sun;
-		JLabel monCount , tueCount , wedCount , thuCount , friCount, satCount ,sunCount;
 		JPanel monPanel, tuePanel , wedPanel, thuPanel, friPanel , satPanel , sunPanel;
 		monPanel = new JPanel();
 		tuePanel = new JPanel();
@@ -330,10 +341,57 @@ public class Pomodoro extends JFrame {
 		logPanel.add(satPanel);
 		logPanel.add(sunPanel);
 		logFrame.add(logPanel);
-		
-		records.read();
-		
+				
 		//INIT WEEk
+		initWeek();
+		
+		logFrame.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				isStatClicked = false;
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
+	public void initWeek() {
 		ArrayList<Week> week = records.getWeek();
 		monCount.setText(Integer.toString(week.get(0).getWeek()));
 		tueCount.setText(Integer.toString(week.get(1).getWeek()));
@@ -367,6 +425,11 @@ public class Pomodoro extends JFrame {
 			skip.setVisible(false);
 			System.out.println("pomodoro finish!");
 			records.write("finish");
+			records.read();
+			if(isStatClicked) {
+				System.out.println("stat click");
+				initWeek();
+			}
 		}
 	}
 }
